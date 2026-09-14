@@ -40,3 +40,11 @@ Readable shapes and silhouettes before decorative assets. Persistent short contr
 
 ## Validation gate
 A new player should start interacting within 30 seconds. Run an entire successful objective, intentionally cause a recoverable mistake, and complete after recovery. Record automated browser checks separately from manual feel testing. Ask playtesters what caused their failure, whether correction felt possible, and whether they wanted another attempt. Choose the next milestone from this evidence rather than adding content automatically.
+
+## Implemented first slice — 14 September 2026
+
+The prototype is a single self-contained Canvas HTML file, with a 12.55 m ascent. Q/E or left/right click toggle independent hands; pointer chooses a hold, W/Up retracts the arms, A/D or arrows lean. Toggles replace held-button grabbing to keep input predictable. The safe route alternates 15 holds; an amber gap hold offers an optional transfer around the left rest-area hold. The rest shelf and two additional catch decks support recoveries.
+
+Simulation uses a 120 Hz fixed step with bounded catch-up. Gravity accelerates a body point mass. Each hand sets a unilateral maximum-distance constraint at catch time (158 world-unit reach); pulling retracts toward 44 units. With two anchors, total length cannot contract below their separation plus solver slack. Two hands add horizontal damping; one hand permits swinging. Release preserves the constrained body's current velocity. Platform landing is automatic and one-way. No fatigue or release impulse is added.
+
+A solid aim ring and REACH/TOO FAR text communicate eligibility. Both hand states remain visible. The camera follows smoothly without shake. Pause, focus loss, restart, and a stable upper-deck completion check are implemented. Automated routes passed; human control comprehension and feel are still hypotheses.

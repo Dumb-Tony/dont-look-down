@@ -16,3 +16,7 @@ No campaign, progression economy, networking, asset pipeline, or dependency-heav
 
 ## Later sharing milestone
 Use this repository's own remote and static hosting; follow the parent project's standing instructions when shipping. Keep published contents limited to this game. Record the verified public URL and commit in README. First request prepares for later external testing; never report a public link before deployment succeeds.
+
+## M1 outcome — 14 September 2026
+
+Implemented and verified locally. Main ascent, fall/lower-hold recovery, and rest/gap recovery all finish on the upper deck through browser input replays. Pause, restart, resizing, independent hands, unreachable grabs, and two-anchor pulling are checked. See PLAYTEST.md for actual evidence and limits. Human playtesting remains the next validation gate.
