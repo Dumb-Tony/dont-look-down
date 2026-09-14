@@ -56,3 +56,5 @@ Local automated Edge Chromium replay passed:
 - Screenshots of short bent arms, maximum pointer reach, narrow layout, and summit were visually reviewed.
 
 These remain automated input replays and screenshot review, not human feel testing. Next external check: whether press-to-free and release-to-grip feels intuitive, whether the shorter reach reads correctly, and whether automatic body pull feels responsive without feeling forced.
+
+Public verification: Pages build 34818716090 succeeded for `e236100cba79a6c085f59e23565f4b10dd8d4d04`. The complete revised replay then passed against https://dumb-tony.github.io/dont-look-down/ : main summit, lower-hold recovery and summit, rest/gap recovery and summit, input ordering, chorded buttons, keyboard alternatives, capped hand reach, pause/blur/reset, resizing, and zero uncaught browser errors.
