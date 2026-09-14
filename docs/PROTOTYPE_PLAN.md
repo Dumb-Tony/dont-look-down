@@ -24,3 +24,7 @@ Implemented and verified locally. Main ascent, fall/lower-hold recovery, and res
 ## Control revision — 14 September 2026
 
 Replaced toggle grips with hold-to-move/release-to-grip, shortened arms with fixed limb segments, and re-spaced the routes. Full mouse-only ascent and recovery routes pass. See current GDD and PLAYTEST for the superseding control rules and actual checks.
+
+## Visual milestone — close cliff view
+
+Implement a closer third-person camera and cliff art, retaining the accepted mouse controls. Replace ring markers with rock lips and aimed-only edge feedback. Re-run full success/recovery routes because zoom changes pointer-to-world mapping. Defer continuous rock-surface grip discovery to a later milestone.

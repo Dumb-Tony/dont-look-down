@@ -1,11 +1,13 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Don't Look Down — First Ascent</title><style>
 :root{color-scheme:dark;--paper:#f4ecdb;--muted:#9aacae;--acid:#d7ee86}*{box-sizing:border-box}body{margin:0;background:#101e26;color:var(--paper);font-family:system-ui,sans-serif;overflow:hidden}canvas{display:block;width:100vw;height:100vh;touch-action:none}.top{position:absolute;left:30px;right:30px;top:22px;display:flex;justify-content:space-between;gap:18px;pointer-events:none}.eyebrow{color:var(--acid);font-size:10px;letter-spacing:3px;font-weight:700}h1{font-size:clamp(20px,3vw,36px);letter-spacing:-1.5px;margin:5px 0 2px;font-weight:800}.subtitle{font-size:12px;color:#9aacae}.tools{display:flex;align-items:flex-start;gap:8px;pointer-events:auto}button{background:#172a32;border:1px solid #52646a;color:var(--paper);padding:10px 13px;border-radius:5px;font:600 12px system-ui;cursor:pointer}button:hover{background:#30454a}button:focus-visible{outline:2px solid var(--acid)}.bottom{position:absolute;bottom:20px;left:30px;right:30px;display:flex;align-items:flex-end;justify-content:space-between;gap:15px;pointer-events:none}.guide{background:#101e26e8;border:1px solid #3e535b;border-radius:8px;padding:13px 17px;max-width:490px;font-size:12px;line-height:1.8}.guide strong{color:var(--acid)}.hint{color:#aebec0}.readout{text-align:right;font-variant-numeric:tabular-nums}.height{font-size:30px;font-weight:750;letter-spacing:-1px}.meter{color:#adbec0;font-size:10px;letter-spacing:2px}.hands{display:flex;gap:8px;margin-bottom:8px}.hand{padding:8px 12px;background:#142831e8;border:1px solid #526970;border-radius:5px;font-size:11px}.hand.on{border-color:var(--acid);color:var(--acid)}#toast{position:absolute;top:112px;left:50%;transform:translateX(-50%);font-size:12px;color:#f4ecdb;background:#26383dee;border:1px solid #657574;padding:9px 16px;border-radius:20px;pointer-events:none;white-space:nowrap}.overlay{position:absolute;inset:0;display:grid;place-items:center;background:#09151ab8;backdrop-filter:blur(5px)}.overlay[hidden]{display:none}.card{max-width:450px;margin:24px;background:#142932;border:1px solid #74877c;border-radius:12px;padding:35px}.card h2{font-size:36px;margin:8px 0 14px;letter-spacing:-1px}.card p{font-size:14px;line-height:1.7;color:#bdcdcc}.card button{background:var(--acid);color:#14252b;border:0;margin-top:12px} @media(max-width:650px){.top{left:14px;right:14px;top:14px}.bottom{left:14px;right:14px;bottom:12px}.guide{font-size:10px;max-width:265px;padding:9px}.subtitle{max-width:190px;font-size:10px}.tools button{padding:8px}.height{font-size:24px}#toast{top:100px;font-size:10px}.hands{gap:4px}.hand{padding:6px;font-size:10px}}
+
+.top{top:26px;left:32px;right:32px}h1{font-size:25px;letter-spacing:-1px;font-weight:700}.eyebrow{color:#d6c3a1;letter-spacing:2.6px;font-size:9px}.subtitle{color:#c1c1b4;font-size:11px}.guide{border:0;border-left:1px solid #c9b79466;border-radius:0;background:linear-gradient(90deg,#182024c9,#18202400);padding:8px 16px;font-size:11px;line-height:1.8}.guide strong{color:#e3d5bd;font-weight:600}.hint{color:#acb5b2}.bottom{bottom:26px}.hand{background:#20272bc9;border-color:#91918666}.hand.on{border-color:#caba98;color:#ece1c9}.height{font-weight:400;font-size:26px}.meter{letter-spacing:1.5px;color:#c0c3b8}button{background:#20272b99;border-color:#b5b3a34d;font-weight:400;border-radius:2px}button:hover{background:#566264}#toast{top:auto;bottom:160px;background:#1b2428cc;border-color:#caba9829;font-size:11px;border-radius:3px;color:#e0dacb;max-width:90vw;white-space:normal;text-align:center}.card{background:#273135;border-color:#aaa18c}.card button{background:#d6c3a1}.tools{gap:7px}@media(max-width:650px){.top{left:16px;right:16px;top:16px}h1{font-size:19px}.eyebrow{font-size:7px;letter-spacing:1.5px}.subtitle{font-size:9px;max-width:170px}.guide{font-size:9px;max-width:250px;padding:6px 10px}.bottom{bottom:16px}.height{font-size:22px}#toast{bottom:165px}.tools button{font-size:10px;padding:7px}.hand{font-size:9px;padding:6px}}
 </style></head><body>
-<canvas id="scene" aria-label="Climb the scaffold. Hold left or right mouse button to move that hand. Release over a reachable hold to grip. A and D lean." tabindex="0"></canvas>
-<header class="top"><div><div class="eyebrow">FIELD STUDY 01 / PHYSICAL CLIMBING</div><h1>DON'T LOOK DOWN.</h1><div class="subtitle">A short climb. A long way back. Reach the upper deck.</div></div><div class="tools"><button id="pause">Pause · P</button><button id="reset">Restart · R</button></div></header>
-<div id="toast">Hold a mouse button, move that hand to a ring, then let go.</div>
-<div class="bottom"><div class="guide"><strong>HOLD LEFT / RIGHT MOUSE</strong> release & move that hand<br><strong>LET GO OVER A RING</strong> grip · your body pulls up naturally<br><strong>A D / ← →</strong> lean &nbsp; <strong>P</strong> pause &nbsp; <strong>R</strong> reset<br><span class="hint">Move one hand at a time. Planted hands stay put.<br>Q / E also work: hold to move, release to grip.</span></div><div class="readout"><div class="hands"><span class="hand" id="left">L · FREE</span><span class="hand" id="right">R · FREE</span></div><div class="height" id="height">0.0 m</div><div class="meter" id="progress">TO UPPER DECK · 4.7 m</div></div></div>
+<canvas id="scene" aria-label="Climb the cliff. Hold left or right mouse button to move that hand. Release over a reachable hold to grip. A and D lean." tabindex="0"></canvas>
+<header class="top"><div><div class="eyebrow">NORTH FACE / FIRST LIGHT</div><h1>DON'T LOOK DOWN.</h1><div class="subtitle">Find your footing. Follow the stone.</div></div><div class="tools"><button id="pause">Pause · P</button><button id="reset">Restart · R</button></div></header>
+<div id="toast">Hold a mouse button, move that hand to a rock edge, then let go.</div>
+<div class="bottom"><div class="guide"><strong>HOLD LEFT / RIGHT MOUSE</strong> release & move that hand<br><strong>LET GO OVER AN EDGE</strong> grip · your body pulls up naturally<br><strong>A D / ← →</strong> lean &nbsp; <strong>P</strong> pause &nbsp; <strong>R</strong> reset<br><span class="hint">Move one hand at a time. Planted hands stay put.<br>Q / E also work: hold to move, release to grip.</span></div><div class="readout"><div class="hands"><span class="hand" id="left">L · FREE</span><span class="hand" id="right">R · FREE</span></div><div class="height" id="height">0.0 m</div><div class="meter" id="progress">TO SUMMIT · 4.7 m</div></div></div>
 <div class="overlay" id="overlay" hidden><div class="card"><div class="eyebrow" id="overline">TAKE A BREATH</div><h2 id="title">On hold.</h2><p id="message">Your grips and position are saved. Resume when you're ready.</p><button id="resume">Keep climbing</button></div></div>
 <script>
 'use strict';
@@ -14,8 +16,8 @@ const ui=Object.fromEntries(['pause','reset','toast','left','right','height','pr
 const FLOOR=1450,REACH=58,MIN_ARM=18,RADIUS=23;
 const holds=[390,440,365,435,365,365,350,420,475,425,485,520,465,540,535].map((x,i)=>({x,y:1305-i*85,id:i}));
 holds.push({x:505,y:805,id:15,shortcut:true});
-const platforms=[{x:160,y:FLOOR,w:560,name:'BASE CAMP'},{x:280,y:920,w:125,name:'REST / NO RUSH'},{x:450,y:1080,w:125,name:'CATCH DECK'},{x:260,y:660,w:105,name:'LOWER CATCH'},{x:460,y:195,w:195,name:'UPPER DECK'}];
-// Compact the hold layout to human-scale reach; decorative scaffolding stays broad.
+const platforms=[{x:160,y:FLOOR,w:560,name:'BASE CAMP'},{x:280,y:920,w:125,name:'REST / NO RUSH'},{x:450,y:1080,w:125,name:'CATCH DECK'},{x:260,y:660,w:105,name:'LOWER CATCH'},{x:460,y:195,w:195,name:'SUMMIT'}];
+// Compact the hold layout to human-scale reach; the cliff is painted around the tested climb.
 for(const h of holds){h.x=390+(h.x-390)*.4;h.y=FLOOR+(h.y-FLOOR)*.4;}
 for(const p of platforms){p.x=390+(p.x-390)*.4;p.y=FLOOR+(p.y-FLOOR)*.4;p.w*=.4;}
 for(let i=0;i<15;i++)holds[i].x=390+i*3.5+(i%2?8:-8);
@@ -24,20 +26,20 @@ platforms[4].y=holds[14].y+60;
 const restDeck=platforms[1],topDeck=platforms[4];
 let control=[new Set(),new Set()],activeHand=0;
 let W,H,scale,camera,player,hands,keys={},pointer={x:0,y:0,active:false},paused=false,won=false,settle=0,time=0,attempts=0,best=0,feedback='',feedbackUntil=0,last=0,acc=0,grabs=0,falls=0;
-function resize(){W=innerWidth;H=innerHeight;const d=Math.min(devicePixelRatio||1,2);canvas.width=W*d;canvas.height=H*d;ctx.setTransform(d,0,0,d,0,0);scale=Math.min(1.15,W/820,H/660);}
+function resize(){W=innerWidth;H=innerHeight;const d=Math.min(devicePixelRatio||1,2);canvas.width=W*d;canvas.height=H*d;ctx.setTransform(d,0,0,d,0,0);scale=Math.min(3.4,W/310,H/260);}
 function say(s,d=3){feedback=s;feedbackUntil=time+d;ui.toast.textContent=s;}
-function reset(){player={x:390,y:FLOOR-RADIUS,vx:0,vy:0,ground:true};hands=[null,null];control=[new Set(),new Set()];activeHand=0;camera=player.y-120;keys={};pointer.active=false;won=false;paused=false;settle=0;time=0;best=0;grabs=0;falls=0;acc=0;attempts++;ui.overlay.hidden=true;ui.pause.textContent='Pause · P';say('Hold a mouse button, move that hand to a ring, then let go.',7);}
+function reset(){player={x:390,y:FLOOR-RADIUS,vx:0,vy:0,ground:true};hands=[null,null];control=[new Set(),new Set()];activeHand=0;camera=player.y-22;keys={};pointer.active=false;won=false;paused=false;settle=0;time=0;best=0;grabs=0;falls=0;acc=0;attempts++;ui.overlay.hidden=true;ui.pause.textContent='Pause · P';say('Hold a mouse button, move that hand to a rock edge, then let go.',7);}
 function screen(p){return{x:W/2+(p.x-420)*scale,y:H*.53+(p.y-camera)*scale};}
 function world(p){return{x:420+(p.x-W/2)/scale,y:camera+(p.y-H*.53)/scale};}
 function target(){const p=pointer.active?world(pointer):holds[0];let near=null,d=14;for(const h of holds){let n=Math.hypot(h.x-p.x,h.y-p.y);if(n<d){near=h;d=n;}}return near;}
 function shoulder(i){return{x:player.x+(i?9:-9),y:player.y-12};}
 function reachable(h,i){const a=shoulder(i);return !!h&&Math.hypot(h.x-a.x,h.y-a.y)<=REACH;}
-function beginHand(i,source){if(paused||won)return;control[i].add(source);activeHand=i;const wasHeld=!!hands[i];hands[i]=null;if(wasHeld&&!hands[1-i]&&!player.ground){falls++;say('Hand free. Move to a reachable ring, then let go.');}}
-function finishHand(i,source){if(!control[i].delete(source)||control[i].size||paused||won)return;const h=target();if(!h){say('Missed the ring. Hold the button to reach again.');return;}if(!reachable(h,i)){say('OUT OF REACH · move closer before letting go.');return;}const a=shoulder(i);hands[i]={id:h.id,length:Math.max(MIN_ARM,Math.hypot(h.x-a.x,h.y-a.y))};grabs++;say((i?'Right':'Left')+' grip set. Move the other hand when ready.');}
+function beginHand(i,source){if(paused||won)return;control[i].add(source);activeHand=i;const wasHeld=!!hands[i];hands[i]=null;if(wasHeld&&!hands[1-i]&&!player.ground){falls++;say('Hand free. Move to a reachable rock edge, then let go.');}}
+function finishHand(i,source){if(!control[i].delete(source)||control[i].size||paused||won)return;const h=target();if(!h){say('Missed the rock edge. Hold the button to reach again.');return;}if(!reachable(h,i)){say('OUT OF REACH · move closer before letting go.');return;}const a=shoulder(i);hands[i]={id:h.id,length:Math.max(MIN_ARM,Math.hypot(h.x-a.x,h.y-a.y))};grabs++;say((i?'Right':'Left')+' grip set. Move the other hand when ready.');}
 function cancelHands(){control.forEach(c=>c.clear());}
 function handPosition(i){if(hands[i])return holds[hands[i].id];const a=shoulder(i);if(!control[i].size)return{x:a.x+(i?10:-10),y:a.y+29};const h=target(),p=h&&reachable(h,i)?h:world(pointer),dx=p.x-a.x,dy=p.y-a.y,d=Math.hypot(dx,dy)||1,k=Math.min(1,REACH/d);return{x:a.x+dx*k,y:a.y+dy*k};}
 function pause(value=!paused){if(won)return;paused=value;keys={};cancelHands();acc=0;ui.pause.textContent=paused?'Resume · P':'Pause · P';ui.overlay.hidden=!paused;ui.overline.textContent='TAKE A BREATH';ui.title.textContent='On hold.';ui.message.textContent="Your grips and position are saved. Resume when you're ready.";ui.resume.textContent='Keep climbing';}
-function win(){won=true;keys={};cancelHands();ui.overlay.hidden=false;ui.overline.textContent='FIRST ASCENT / COMPLETE';ui.title.textContent='You made it up.';ui.message.textContent=`Both feet on the upper deck. ${Math.floor(time/60)}:${String(Math.floor(time%60)).padStart(2,'0')} climbing · ${grabs} grips · ${falls} airborne releases. The way back was always there.`;ui.resume.textContent='Climb again';say('Upper deck reached. Safe and settled.',100);}
+function win(){won=true;keys={};cancelHands();ui.overlay.hidden=false;ui.overline.textContent='FIRST ASCENT / COMPLETE';ui.title.textContent='You made it up.';ui.message.textContent=`Both feet on the summit ledge. ${Math.floor(time/60)}:${String(Math.floor(time%60)).padStart(2,'0')} climbing · ${grabs} grips · ${falls} airborne releases. The way back was always there.`;ui.resume.textContent='Climb again';say('Summit ledge reached. Safe and settled.',100);}
 function step(dt){if(paused||won)return;time+=dt;const oldX=player.x,oldY=player.y;const count=hands.filter(Boolean).length,pull=count>0,lean=(keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.ArrowLeft?1:0);
 player.vx+=lean*(player.ground?640:480)*dt;player.vy+=820*dt;player.vx*=Math.exp(-(player.ground?9:count===2?3:0.22)*dt);player.vx=Math.max(-330,Math.min(330,player.vx));player.vy=Math.min(720,player.vy);
 player.x+=player.vx*dt;player.y+=player.vy*dt;
@@ -50,27 +52,79 @@ player.vx=(player.x-oldX)/dt;player.vy=(player.y-oldY)/dt;
 if(player.ground){player.vy=0;if(player.y===restDeck.y-RADIUS&&time>feedbackUntil)say('Rest shelf. Your feet are safe. Choose the next hand placement.',4);}
 // No release impulse: velocity comes from the last constrained body displacement.
 const top=platforms[4];if(player.ground&&Math.abs(player.y+RADIUS-top.y)<1&&player.x>=top.x&&player.x<=top.x+top.w&&Math.abs(player.vx)<18)settle+=dt;else settle=0;if(settle>.75)win();
-best=Math.max(best,(FLOOR-RADIUS-player.y)/100);camera+=(player.y-105-camera)*(1-Math.exp(-4*dt));
-if(time>feedbackUntil)ui.toast.textContent=count===2?'Two grips set. Hold the lower hand’s button to move it upward.':count===1?'Move your free hand to the next ring. Let go of its button to grip.':'Hold a mouse button to move that hand. Release over a ring to grip.';
+best=Math.max(best,(FLOOR-RADIUS-player.y)/100);camera+=(player.y-22-camera)*(1-Math.exp(-4*dt));
+if(time>feedbackUntil)ui.toast.textContent=count===2?'Two grips set. Hold the lower hand’s button to move it upward.':count===1?'Move your free hand to the next rock edge. Let go of its button to grip.':'Hold a mouse button to move that hand. Release over a rock edge to grip.';
 }
 function line(x1,y1,x2,y2,color,width=1){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();}
 function label(s,x,y,color='#9aadad',size=11){ctx.fillStyle=color;ctx.font=`600 ${size}px system-ui`;ctx.fillText(s,x,y);}
-function draw(){ctx.clearRect(0,0,W,H);const bg=ctx.createLinearGradient(0,0,0,H);bg.addColorStop(0,'#10232d');bg.addColorStop(1,'#23383d');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-// Quiet distant city, moving slowly below the scaffold.
-for(let i=0;i<22;i++){const x=i*W/21,w=W/30+14,h=50+((i*83)%210),y=H*.9-h+(camera-1200)*.055;ctx.fillStyle=i%2?'#1b3038':'#1a2d35';ctx.fillRect(x,y,w,H);for(let j=0;j<4;j++)line(x+8,y+20+j*24,x+w-8,y+20+j*24,'#2b3e43',2);}
+// Stable procedural stone: cached world texture, no images or network requests.
+function random(seed){const v=Math.sin(seed*127.1+311.7)*43758.5453;return v-Math.floor(v);}
+function polygon(points,fill){ctx.fillStyle=fill;ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();ctx.fill();}
+const stone=document.createElement('canvas');stone.width=1100;stone.height=1700;
+const rock=stone.getContext('2d');
+rock.fillStyle='#817967';rock.fillRect(0,0,1100,1700);
+for(let row=0;row<58;row++)for(let col=0;col<24;col++){
+ const seed=row*31+col,x=col*49-25+random(seed)*20,y=row*32+random(seed+7)*18;
+ const tone=Math.floor(90+random(seed+8)*44);rock.fillStyle=`rgb(${tone+17},${tone+12},${tone+1})`;
+ rock.beginPath();rock.moveTo(x,y);rock.lineTo(x+46,y-8);rock.lineTo(x+58,y+19);rock.lineTo(x+20,y+41);rock.lineTo(x-6,y+29);rock.closePath();rock.fill();
+ rock.strokeStyle='rgba(40,43,38,.22)';rock.lineWidth=.7;rock.beginPath();rock.moveTo(x-6,y+29);rock.lineTo(x+20,y+41);rock.lineTo(x+58,y+19);rock.stroke();
+ rock.strokeStyle='rgba(218,203,168,.22)';rock.beginPath();rock.moveTo(x,y);rock.lineTo(x+46,y-8);rock.stroke();
+}
+for(let i=0;i<20000;i++){const x=random(i+900)*1100,y=random(i+3300)*1700;rock.fillStyle=i%3?'rgba(39,43,37,.13)':'rgba(220,210,177,.2)';rock.fillRect(x,y,.4+random(i)*1.2,.3+random(i+20)*1.2);}
+for(let i=0;i<140;i++){let x=random(i+91)*1100,y=random(i+100)*1700;rock.beginPath();rock.moveTo(x,y);for(let j=0;j<5;j++){x+=random(i*9+j)*14-8;y+=7+random(i*5+j)*16;rock.lineTo(x,y);}rock.strokeStyle='rgba(35,40,37,.38)';rock.lineWidth=.5+random(i);rock.stroke();}
+function cliffEdge(y){return 316+Math.sin(y*.018)*12+Math.sin(y*.073)*5;}
+function draw(){
+ctx.clearRect(0,0,W,H);const sky=ctx.createLinearGradient(0,0,W,H);sky.addColorStop(0,'#c9cab8');sky.addColorStop(.45,'#9caeab');sky.addColorStop(1,'#4b717b');ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);
+// The valley drifts below the close, stationary rock face.
+for(let layer=0;layer<4;layer++){const base=H*(.38+layer*.17)+(camera-1200)*(.12+layer*.025);let pts=[[-100,H+100],[-100,base+130]];for(let i=0;i<13;i++)pts.push([i*W/10,base-Math.sin(i*1.7+layer)*H*.10-random(i+layer*20)*H*.10]);pts.push([W+100,H+100]);polygon(pts,['#9cada8','#829b98','#65868b','#486d77'][layer]);}
+const haze=ctx.createLinearGradient(0,H*.4,0,H);haze.addColorStop(0,'#ccd0b900');haze.addColorStop(1,'#d4d8c75c');ctx.fillStyle=haze;ctx.fillRect(0,0,W,H);
 ctx.save();ctx.translate(W/2-420*scale,H*.53-camera*scale);ctx.scale(scale,scale);
-for(let y=70;y<1500;y+=170){line(235,y,650,y,'#465458',5);line(235,y,650,y+170,'#34484e',3);line(650,y,235,y+170,'#34484e',3);}line(235,40,235,1500,'#617072',7);line(650,40,650,1500,'#617072',7);
-for(let y=200;y<1450;y+=100){line(691,y,701,y,'#6a7b7a',1);label(((FLOOR-y)/100).toFixed(1),711,y+4,'#81928d',10);}
-ctx.setLineDash([4,9]);line(holds[0].x,holds[0].y,holds[0].x,1370,'#8eaa79',1);for(let i=0;i<14;i++)line(holds[i].x,holds[i].y,holds[i+1].x,holds[i+1].y,'#677967',1);ctx.setLineDash([]);
-for(const p of platforms){ctx.fillStyle='#344c51';ctx.fillRect(p.x,p.y,p.w,15);ctx.fillStyle=p===topDeck?'#d7ee86':'#a8b399';ctx.fillRect(p.x,p.y,p.w,4);for(let x=p.x+8;x<p.x+p.w;x+=23)line(x,p.y+6,x-6,p.y+13,'#1a3038',4);label(p.name,p.x,p.y+33,p===topDeck?'#d7ee86':'#a6b7b2',10);}
-label('THE LONG WAY UP',268,66,'#cfdfbc',13);label('GAP / SWING ACROSS',holds[15].x+18,holds[15].y-12,'#d7bd88',9);
-const aim=target(),origin=shoulder(activeHand);ctx.beginPath();ctx.arc(origin.x,origin.y,REACH,0,Math.PI*2);ctx.setLineDash([3,8]);ctx.strokeStyle='#c4d7b92d';ctx.lineWidth=1;ctx.stroke();ctx.setLineDash([]);
-for(const h of holds){const reach=reachable(h,activeHand),held=hands.some(g=>g&&g.id===h.id);ctx.beginPath();ctx.arc(h.x,h.y,held?7:6,0,Math.PI*2);ctx.fillStyle=held?'#d7ee86':h.shortcut?'#d9af76':reach?'#bed2b4':'#6c8180';ctx.fill();ctx.strokeStyle='#172d34';ctx.lineWidth=2;ctx.stroke();ctx.beginPath();ctx.arc(h.x,h.y,2,0,Math.PI*2);ctx.fillStyle='#132630';ctx.fill();if(h===aim){ctx.beginPath();ctx.arc(h.x,h.y,11,0,Math.PI*2);ctx.strokeStyle=reach?'#e1f1b1':'#edaa8d';ctx.lineWidth=2;ctx.stroke();label(reach?'REACH':'TOO FAR',h.x+15,h.y+4,reach?'#e1f1b1':'#edaa8d',10);}}
-// Fixed-length upper/lower arm bones bend at an elbow instead of stretching.
-for(let i=0;i<2;i++){const a=shoulder(i),h=handPosition(i),dx=h.x-a.x,dy=h.y-a.y,d=Math.hypot(dx,dy)||.001,bend=Math.sqrt(Math.max(0,(REACH/2)**2-(Math.min(d,REACH)/2)**2)),side=i?1:-1,elbow={x:(a.x+h.x)/2-dy/d*bend*side,y:(a.y+h.y)/2+dx/d*bend*side},color=i?'#dba67f':'#d4e6ba';line(a.x,a.y,elbow.x,elbow.y,color,5);line(elbow.x,elbow.y,h.x,h.y,color,5);ctx.beginPath();ctx.arc(h.x,h.y,control[i].size?5:3,0,Math.PI*2);ctx.strokeStyle=color;ctx.lineWidth=2;ctx.stroke();if(hands[i]||control[i].size)label(i?'R':'L',h.x-3,h.y-11,color,9);}
-line(player.x-5,player.y+4,player.x-11-player.vx*.012,player.y+22,'#11252d',8);line(player.x+5,player.y+4,player.x+11-player.vx*.012,player.y+22,'#11252d',8);
-ctx.fillStyle='#dc916b';ctx.beginPath();ctx.roundRect(player.x-12,player.y-20,24,30,7);ctx.fill();ctx.fillStyle='#253b42';ctx.fillRect(player.x-13,player.y,26,6);ctx.fillStyle='#f0d3a7';ctx.beginPath();ctx.arc(player.x,player.y-28,10,0,Math.PI*2);ctx.fill();ctx.fillStyle='#d7ee86';ctx.beginPath();ctx.arc(player.x,player.y-31,11,Math.PI,Math.PI*2);ctx.fill();ctx.restore();
-ui.height.textContent=Math.max(0,(FLOOR-RADIUS-player.y)/100).toFixed(1)+' m';ui.progress.textContent='TO UPPER DECK · '+Math.max(0,(player.y-(topDeck.y-RADIUS))/100).toFixed(1)+' m';hands.forEach((h,i)=>{const el=i?ui.right:ui.left;el.textContent=(i?'R':'L')+' · '+(control[i].size?'MOVING':h?'HOLDING':'FREE');el.classList.toggle('on',!!h);});}
+// Cliff silhouette and dimensional shadow at its exposed edge.
+ctx.save();ctx.beginPath();ctx.moveTo(cliffEdge(700),700);for(let y=700;y<1700;y+=8)ctx.lineTo(cliffEdge(y),y);ctx.lineTo(1000,1700);ctx.lineTo(1000,700);ctx.closePath();ctx.clip();ctx.drawImage(stone,0,0);
+const shade=ctx.createLinearGradient(300,0,650,0);shade.addColorStop(0,'#262f3066');shade.addColorStop(.25,'#ead6a017');shade.addColorStop(.8,'#323c3540');ctx.fillStyle=shade;ctx.fillRect(270,700,750,1000);
+// Long sediment seams break up the small facets.
+for(let n=0;n<24;n++){let y=780+n*31;ctx.beginPath();ctx.moveTo(300,y);ctx.bezierCurveTo(370,y-12,420,y+8,700,y-24);ctx.strokeStyle=n%3?'#424b3c44':'#d3c29c55';ctx.lineWidth=n%3?1.3:.8;ctx.stroke();}
+ctx.restore();
+for(const p of platforms){const seed=p.y;
+ polygon([[p.x-7,p.y+4],[p.x,p.y],[p.x+p.w,p.y],[p.x+p.w+7,p.y+9],[p.x+p.w-7,p.y+28],[p.x+6,p.y+36]],'#515849');
+ polygon([[p.x,p.y],[p.x+p.w,p.y],[p.x+p.w-6,p.y+6],[p.x+2,p.y+8],[p.x-7,p.y+4]],'#b0a383');
+ polygon([[p.x+2,p.y+9],[p.x+p.w-6,p.y+7],[p.x+p.w-7,p.y+28],[p.x+15,p.y+19]],'#79755e');
+ for(let j=0;j<12;j++){const x=p.x+random(seed+j)*p.w;line(x,p.y+2,x+2,p.y+1,'#d1c4a5',.6);}
+ if(p===topDeck){line(p.x+p.w-11,p.y,p.x+p.w-11,p.y-28,'#4b5146',1.3);polygon([[p.x+p.w-11,p.y-28],[p.x+p.w+5,p.y-25],[p.x+p.w-11,p.y-19]],'#b66d4d');}
+}
+const aim=pointer.active?target():null;
+// Grab patches are the top lips of actual-looking stone flakes, not nodes.
+for(const h of holds){const w=9+random(h.id+40)*5;
+ polygon([[h.x-w,h.y+2],[h.x-w+3,h.y-2],[h.x+w-2,h.y-1],[h.x+w+3,h.y+4],[h.x+w-1,h.y+11],[h.x-4,h.y+9]],'#444b3b');
+ polygon([[h.x-w+3,h.y-2],[h.x+w-2,h.y-1],[h.x+w+1,h.y+2],[h.x-3,h.y+4],[h.x-w,h.y+2]],'#b5a785');
+ polygon([[h.x-3,h.y+4],[h.x+w+1,h.y+2],[h.x+w-1,h.y+9],[h.x-3,h.y+8]],'#8d8369');
+ line(h.x-w+3,h.y-2,h.x+w-3,h.y-1,'#c1b395',.6);
+ if(h===aim){line(h.x-w+2,h.y-2,h.x+w-2,h.y-1,reachable(h,activeHand)?'#f0dfb8':'#a55e46',1.3);}
+ if(hands.some(g=>g&&g.id===h.id)){for(let k=0;k<3;k++)line(h.x-3+k*2,h.y+1,h.x-3+k*2,h.y+3,'#e3d8bb',.6);}
+}
+// Climber seen from behind, with shaded clothes and planted palms.
+ctx.save();ctx.translate(player.x+5,player.y+6);ctx.scale(1,.85);ctx.fillStyle='#202b2940';ctx.beginPath();ctx.ellipse(0,-9,18,39,-.15,0,Math.PI*2);ctx.fill();ctx.restore();
+ctx.lineCap='round';ctx.lineJoin='round';
+for(let i=0;i<2;i++){const side=i?1:-1,kneeX=player.x+side*(10+(player.ground?0:3))-player.vx*.008,kneeY=player.y+12,footX=player.x+side*11-player.vx*.012;
+ line(player.x+side*6,player.y+3,kneeX,kneeY,'#303c3d',8);line(kneeX,kneeY,footX,player.y+21,'#3c4948',6);line(kneeX-side*1.5,kneeY,footX-side*1.5,player.y+19,'#68716a',1);
+ line(footX-side*2,player.y+21,footX+side*4,player.y+22,'#252d2d',5);line(footX-side*2,player.y+23,footX+side*4,player.y+23,'#999681',.9);
+}
+for(let i=0;i<2;i++){const a=shoulder(i),h=handPosition(i),dx=h.x-a.x,dy=h.y-a.y,d=Math.hypot(dx,dy)||.001,bend=Math.sqrt(Math.max(0,(REACH/2)**2-(Math.min(d,REACH)/2)**2)),side=i?1:-1,e={x:(a.x+h.x)/2-dy/d*bend*side,y:(a.y+h.y)/2+dx/d*bend*side};
+ line(a.x,a.y,e.x,e.y,'#324a4b',7);line(a.x-1,a.y-1,e.x-1,e.y-1,'#718583',2);line(e.x,e.y,h.x,h.y,'#586e6b',5);line(e.x-1,e.y-1,h.x-1,h.y-1,'#92a19a',1);
+ const cuff={x:h.x+(e.x-h.x)*.16,y:h.y+(e.y-h.y)*.16};line(cuff.x,cuff.y,h.x,h.y,'#c5aa85',4);
+ ctx.fillStyle='#d3bc95';ctx.beginPath();ctx.ellipse(h.x,h.y,3,2.5,Math.atan2(dy,dx),0,Math.PI*2);ctx.fill();
+ if(control[i].size){for(let k=0;k<3;k++)line(h.x+(k-1)*1.5,h.y,h.x+(k-1)*2,h.y-3,'#d3bc95',1);}else if(hands[i])for(let k=0;k<3;k++)line(h.x-2+k*1.5,h.y,h.x-2+k*1.5,h.y+2,'#a88b67',.7);
+}
+polygon([[player.x-11,player.y-18],[player.x+9,player.y-19],[player.x+13,player.y-9],[player.x+9,player.y+7],[player.x-9,player.y+7],[player.x-13,player.y-8]],'#486260');
+polygon([[player.x-11,player.y-18],[player.x-4,player.y-18],[player.x-5,player.y+4],[player.x-9,player.y+7],[player.x-13,player.y-8]],'#72877e');
+line(player.x+7,player.y-14,player.x+6,player.y+2,'#2e4948',2);line(player.x-8,player.y+3,player.x+9,player.y+3,'#a9895d',3);line(player.x-8,player.y+4,player.x-4,player.y+12,'#a9895d',1.4);line(player.x+8,player.y+4,player.x+4,player.y+12,'#a9895d',1.4);
+ctx.fillStyle='#ac6749';ctx.beginPath();ctx.roundRect(player.x-4,player.y,8,11,2);ctx.fill();line(player.x-4,player.y+1,player.x+4,player.y+1,'#d4b58a',1.5);
+ctx.fillStyle='#b59672';ctx.beginPath();ctx.ellipse(player.x,player.y-22,5,6,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#43473d';ctx.beginPath();ctx.ellipse(player.x,player.y-28,8,9,.08,0,Math.PI*2);ctx.fill();
+ctx.fillStyle='#c6865a';ctx.beginPath();ctx.ellipse(player.x-1,player.y-31,9,7,.08,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#e0b184';ctx.lineWidth=1;ctx.beginPath();ctx.ellipse(player.x-2,player.y-33,5,3,-.2,Math.PI,Math.PI*1.8);ctx.stroke();line(player.x-8,player.y-28,player.x+8,player.y-27,'#6d5241',1.8);for(let i=0;i<3;i++)line(player.x-4+i*4,player.y-33,player.x-4+i*4,player.y-31,'#835f47',1);
+ctx.restore();
+const vignette=ctx.createRadialGradient(W*.48,H*.46,H*.15,W*.5,H*.5,Math.max(W,H)*.7);vignette.addColorStop(0,'#101c2400');vignette.addColorStop(1,'#14252b70');ctx.fillStyle=vignette;ctx.fillRect(0,0,W,H);
+ui.height.textContent=Math.max(0,(FLOOR-RADIUS-player.y)/100).toFixed(1)+' m';ui.progress.textContent='TO SUMMIT · '+Math.max(0,(player.y-(topDeck.y-RADIUS))/100).toFixed(1)+' m';hands.forEach((h,i)=>{const el=i?ui.right:ui.left;el.textContent=(i?'R':'L')+' · '+(control[i].size?'REACHING':h?'PLANTED':'FREE');el.classList.toggle('on',!!h);});
+}
 function frame(now){if(last)acc+=Math.min((now-last)/1000,.08);last=now;let n=0;while(acc>=1/120&&n++<10){step(1/120);acc-=1/120;}draw();requestAnimationFrame(frame);}
 canvas.addEventListener('pointermove',e=>{pointer={x:e.clientX,y:e.clientY,active:true};});
 // Mouse events track both buttons, including chorded presses and releases outside canvas.

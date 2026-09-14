@@ -58,3 +58,12 @@ Local automated Edge Chromium replay passed:
 These remain automated input replays and screenshot review, not human feel testing. Next external check: whether press-to-free and release-to-grip feels intuitive, whether the shorter reach reads correctly, and whether automatic body pull feels responsive without feeling forced.
 
 Public verification: Pages build 34818716090 succeeded for `e236100cba79a6c085f59e23565f4b10dd8d4d04`. The complete revised replay then passed against https://dumb-tony.github.io/dont-look-down/ : main summit, lower-hold recovery and summit, rest/gap recovery and summit, input ordering, chorded buttons, keyboard alternatives, capped hand reach, pause/blur/reset, resizing, and zero uncaught browser errors.
+
+
+## 2026-09-14 — close cliff visual pass
+
+Local Edge Chromium input replay passed the complete main ascent, lower-hold recovery and summit, rest shelf/gap route and summit, press/release ordering, simultaneous buttons, keyboard equivalents, capped arm reach, pause, focus loss, restart, and 600×750 resizing with no uncaught browser errors. The camera now renders at 3.4 scale on 1280×900 (previously 1.15); input replays still target world holds via the actual screen transform.
+
+Visually inspected the new desktop close-up and narrow-window screenshots. Confirmed the larger climber, articulated arms, cliff facets, ledges, valley depth, compact controls, and removal of ring/dotted-route markers. A narrow-window review revealed the bottom of the cliff silhouette, which was extended below the viewport. No physical hold, platform, reach, or gravity changes were made in this art pass.
+
+Limitations: screenshot review and automated routes do not establish whether the art direction or camera feels right to a person. Rock grip locations remain authored points with the same catch tolerance, visually presented as rock lips. Continuous surface searching, irregular grip regions, rock quality, and 3D camera depth are deferred.

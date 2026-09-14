@@ -12,14 +12,18 @@ You can also open `index.html` directly in a desktop browser. No installation, b
 
 - **Hold left mouse:** release the left hand and move it with the pointer.
 - **Hold right mouse:** release the right hand and move it with the pointer.
-- **Let go over a reachable ring:** that hand grips and stays planted.
+- **Let go over a reachable rock edge:** that hand grips and stays planted.
 - **Q / E:** keyboard alternatives with the same hold-to-move, release-to-grip behavior.
 - **A / D / Left / Right:** optional lean or walk on a platform.
 - **P / Escape:** pause. **R:** restart. Losing focus pauses automatically.
 
-The body pulls up naturally after a grip; W is no longer needed. Start by holding left mouse, moving to the first ring, and letting go. Place the right hand above it. Hold left again to free the lower hand and move it upward. Continue alternating. The dashed circle marks the moving hand's shoulder reach; the highlighted target says REACH or TOO FAR before release. Letting go away from a ring leaves the hand free. Settle on the upper deck for three quarters of a second to finish.
+The body pulls up naturally after a grip; W is no longer needed. Start by holding left mouse, moving to the first rock edge, and letting go. Place the right hand above it. Hold left again to free the lower hand and move it upward. Continue alternating. Aim at the top lip of a projecting rock flake. Its edge gets a subtle light highlight when reachable, or a muted rust highlight when too far; there are no ring markers or dotted route. Letting go away from a rock edge leaves the hand free. Settle on the summit ledge for three quarters of a second to finish.
 
-The left rest shelf supports your weight with no grips. Its right edge offers an optional gap transfer to the amber hold. A failed transfer can fall onto a lower hold or deck; restarting is optional.
+The left rest shelf supports your weight with no grips. Its right edge offers an optional gap transfer to the rock lip to the right. A failed transfer can fall onto a lower hold or deck; restarting is optional.
+
+## Visual direction
+
+Close third-person cliff view, roughly three times the original desktop zoom: a shaded climber, articulated hands, weathered stone, natural ledges, a distant valley, and a quieter interface. This is an incremental art pass. Grab spots still use the tested fixed locations underneath the rock shapes; this is not yet a continuous surface with dynamically discovered grip quality. The next step is less regular rock geometry and judging usable features from their shape.
 
 ## Status and limits
 
