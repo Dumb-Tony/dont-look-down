@@ -36,3 +36,23 @@ Give the public link to a new desktop player without coaching. Observe the first
 GitHub Pages build 34815225070 completed successfully for implementation commit `1b7eef84970146be6961372354a3311af16a462b`. Public address: https://dumb-tony.github.io/dont-look-down/ .
 
 Re-ran the complete browser input replay against that HTTPS address on 14 September 2026. Main summit, falling catch on lower hold then summit, rest landing / gap route / summit, mouse and keyboard grips, pause, focus loss, reset, narrow resize, and zero uncaught browser errors all passed. Public ascent settled at y=172 after about 27 seconds of simulated climbing. This verifies the deployed game, not merely the repository or a local preview.
+
+
+## 2026-09-14 — hold-to-move control revision
+
+User-requested revision: hold left/right mouse to free and position that hand, release to grip; replace long stretchy arms. Current arms use two fixed-length 29-unit bones, shoulder-based reach capped at 58 units, and elbow bending. Holds and decks were repositioned, so the complete routes were re-tested. Auto-pull replaces W.
+
+Local automated Edge Chromium replay passed:
+
+- Entire alternating ascent using mouse buttons only, then stable summit completion.
+- Press immediately frees a planted hand; moving onto a ring does not grip until button release. Every transfer asserts this ordering.
+- Unreachable release fails with OUT OF REACH and no planted hand.
+- Release from hold 4 produces an actual fall; after 230 ms the player catches lower hold 3 with the right hand, then finishes the whole ascent.
+- Fall to the rest shelf, both hands free; continue through amber hold 15, lean into hold 7, and finish the ascent.
+- Simultaneous left/right presses move both hands; releasing right leaves left moving. Both releases clear their own movement independently.
+- Q/E hold/release alternatives, two-hand constraint distances, and a far-away pointer that cannot extend a free arm past 58 units.
+- Pause while dragging freezes the body, clears active movement, and creates no phantom grip on release. Focus loss during right-hand movement also clears it safely. Restart clears state.
+- 600×750 resizing still permits a hand placement; restored 1280×900 successfully. No uncaught browser errors.
+- Screenshots of short bent arms, maximum pointer reach, narrow layout, and summit were visually reviewed.
+
+These remain automated input replays and screenshot review, not human feel testing. Next external check: whether press-to-free and release-to-grip feels intuitive, whether the shorter reach reads correctly, and whether automatic body pull feels responsive without feeling forced.

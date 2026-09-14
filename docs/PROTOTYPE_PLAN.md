@@ -20,3 +20,7 @@ Use this repository's own remote and static hosting; follow the parent project's
 ## M1 outcome — 14 September 2026
 
 Implemented and verified locally. Main ascent, fall/lower-hold recovery, and rest/gap recovery all finish on the upper deck through browser input replays. Pause, restart, resizing, independent hands, unreachable grabs, and two-anchor pulling are checked. See PLAYTEST.md for actual evidence and limits. Human playtesting remains the next validation gate.
+
+## Control revision — 14 September 2026
+
+Replaced toggle grips with hold-to-move/release-to-grip, shortened arms with fixed limb segments, and re-spaced the routes. Full mouse-only ascent and recovery routes pass. See current GDD and PLAYTEST for the superseding control rules and actual checks.

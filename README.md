@@ -8,15 +8,16 @@ A standalone 2D physical climbing prototype: two independent hands, body momentu
 
 You can also open `index.html` directly in a desktop browser. No installation, build, network requests, or external assets are required.
 
-[Source repository](https://github.com/Dumb-Tony/dont-look-down) · playable implementation commit `1b7eef8`.
+[Source repository](https://github.com/Dumb-Tony/dont-look-down).
 
-- Aim at a hold with the pointer.
-- **Q / left click:** toggle left grip. **E / right click:** toggle right grip.
-- **W / Up:** pull toward your held anchors.
-- **A / D / Left / Right:** lean or walk on a platform.
+- **Hold left mouse:** release the left hand and move it with the pointer.
+- **Hold right mouse:** release the right hand and move it with the pointer.
+- **Let go over a reachable ring:** that hand grips and stays planted.
+- **Q / E:** keyboard alternatives with the same hold-to-move, release-to-grip behavior.
+- **A / D / Left / Right:** optional lean or walk on a platform.
 - **P / Escape:** pause. **R:** restart. Losing focus pauses automatically.
 
-Start by grabbing the first ring and holding W. Grab the next reachable ring with your free hand, then release the lower grip. The dashed circle marks reach; the highlighted target says REACH or TOO FAR before you act. Reach the upper deck, release, and settle for three quarters of a second to finish.
+The body pulls up naturally after a grip; W is no longer needed. Start by holding left mouse, moving to the first ring, and letting go. Place the right hand above it. Hold left again to free the lower hand and move it upward. Continue alternating. The dashed circle marks the moving hand's shoulder reach; the highlighted target says REACH or TOO FAR before release. Letting go away from a ring leaves the hand free. Settle on the upper deck for three quarters of a second to finish.
 
 The left rest shelf supports your weight with no grips. Its right edge offers an optional gap transfer to the amber hold. A failed transfer can fall onto a lower hold or deck; restarting is optional.
 
@@ -24,7 +25,7 @@ The left rest shelf supports your weight with no grips. Its right edge offers an
 
 First playable slice implemented and verified locally and on GitHub Pages on 14 September 2026. Automated browser input replays completed an ascent, a lower-hold recovery followed by an ascent, and a rest-platform recovery through the gap route to the summit. These are automated replays, not human feel tests. See `docs/PLAYTEST.md` for evidence and remaining questions.
 
-Simplified point-mass physics with unilateral arm constraints, gravity, momentum-preserving releases, extra two-hand damping, and automatic feet on one-way decks. No fatigue, jumping, equipment, audio, ragdoll collisions, or touch controls. Desktop keyboard and pointer are required. The 2D slice does not establish first-person depth perception or fear of height.
+Short arms with fixed-length upper/lower segments and bending elbows. Holds and decks have been repositioned for a 4.74 m ascent within that reach. Simplified point-mass physics with shoulder-based unilateral arm constraints, gravity, momentum-preserving releases, extra two-hand damping, and automatic feet on one-way decks. No fatigue, jumping, equipment, audio, ragdoll collisions, or touch controls. Desktop pointer play is supported; a keyboard provides optional lean, shortcuts, and alternate hand inputs. The 2D slice does not establish first-person depth perception or fear of height.
 
 ## Project map
 
