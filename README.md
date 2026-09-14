@@ -4,7 +4,11 @@ A standalone 2D physical climbing prototype: two independent hands, body momentu
 
 ## Play
 
-Open `index.html` directly in a desktop browser. No installation, build, network requests, or external assets are required. Public GitHub Pages publishing is in progress; the verified address will be recorded here after deployment.
+**[Play Don't Look Down](https://dumb-tony.github.io/dont-look-down/)** — public deployment verified on 14 September 2026.
+
+You can also open `index.html` directly in a desktop browser. No installation, build, network requests, or external assets are required.
+
+[Source repository](https://github.com/Dumb-Tony/dont-look-down) · playable implementation commit `1b7eef8`.
 
 - Aim at a hold with the pointer.
 - **Q / left click:** toggle left grip. **E / right click:** toggle right grip.
@@ -18,7 +22,7 @@ The left rest shelf supports your weight with no grips. Its right edge offers an
 
 ## Status and limits
 
-First playable slice implemented and locally verified on 14 September 2026. Automated browser input replays completed an ascent, a lower-hold recovery followed by an ascent, and a rest-platform recovery through the gap route to the summit. These are automated replays, not human feel tests. See `docs/PLAYTEST.md` for evidence and remaining questions.
+First playable slice implemented and verified locally and on GitHub Pages on 14 September 2026. Automated browser input replays completed an ascent, a lower-hold recovery followed by an ascent, and a rest-platform recovery through the gap route to the summit. These are automated replays, not human feel tests. See `docs/PLAYTEST.md` for evidence and remaining questions.
 
 Simplified point-mass physics with unilateral arm constraints, gravity, momentum-preserving releases, extra two-hand damping, and automatic feet on one-way decks. No fatigue, jumping, equipment, audio, ragdoll collisions, or touch controls. Desktop keyboard and pointer are required. The 2D slice does not establish first-person depth perception or fear of height.
 

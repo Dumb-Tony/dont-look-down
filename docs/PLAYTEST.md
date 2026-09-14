@@ -31,4 +31,8 @@ The body is a point mass with visual limbs. Arms constrain maximum distance from
 
 Give the public link to a new desktop player without coaching. Observe the first 30 seconds, time to first grip, whether they discover releasing the lower hand, first summit, and one intentional fall recovery. Ask: What caused the fall? Did the reach indicator predict the catch? Did both hands feel reliable? Did you want another attempt? Use that evidence to tune hold spacing and pull speed before adding more world.
 
-Public deployment verification is recorded below after publishing.
+### Public deployment verification
+
+GitHub Pages build 34815225070 completed successfully for implementation commit `1b7eef84970146be6961372354a3311af16a462b`. Public address: https://dumb-tony.github.io/dont-look-down/ .
+
+Re-ran the complete browser input replay against that HTTPS address on 14 September 2026. Main summit, falling catch on lower hold then summit, rest landing / gap route / summit, mouse and keyboard grips, pause, focus loss, reset, narrow resize, and zero uncaught browser errors all passed. Public ascent settled at y=172 after about 27 seconds of simulated climbing. This verifies the deployed game, not merely the repository or a local preview.

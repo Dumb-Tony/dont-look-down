@@ -6,4 +6,6 @@ The first build is a self-contained root index.html, with relative paths only if
 
 Before shipping: verify local play, commit intended files, inspect the staged contents, create or reuse the authenticated user's game-specific repository according to C:\GPT_DEV\AGENTS.md, push, enable static deployment, wait for completion, and verify the public URL in a browser. Record the URL in README. Do not claim deployment readiness from a local preview alone. Do not include unrelated projects, credentials, or local diagnostics.
 
-No license is selected yet; decide redistribution terms before accepting outside contributions. No remote or deployment exists at initialization.
+No license is selected yet; decide redistribution terms before accepting outside contributions. Public repository: https://github.com/Dumb-Tony/dont-look-down . Remote `origin` points only to this game's repository.
+
+Public play URL: https://dumb-tony.github.io/dont-look-down/ . GitHub Pages serves `/` from `main`, with `.nojekyll`. The first deployment succeeded on 14 September 2026; full automated browser routes passed against the live HTTPS address. See PLAYTEST.md for evidence. Changes should be committed here, pushed, and verified after the Pages build succeeds.
