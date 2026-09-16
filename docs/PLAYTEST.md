@@ -67,3 +67,12 @@ Local Edge Chromium input replay passed the complete main ascent, lower-hold rec
 Visually inspected the new desktop close-up and narrow-window screenshots. Confirmed the larger climber, articulated arms, cliff facets, ledges, valley depth, compact controls, and removal of ring/dotted-route markers. A narrow-window review revealed the bottom of the cliff silhouette, which was extended below the viewport. No physical hold, platform, reach, or gravity changes were made in this art pass.
 
 Limitations: screenshot review and automated routes do not establish whether the art direction or camera feels right to a person. Rock grip locations remain authored points with the same catch tolerance, visually presented as rock lips. Continuous surface searching, irregular grip regions, rock quality, and 3D camera depth are deferred.
+
+
+## 2026-09-16 — color, material, and lighting pass
+
+Automated Edge Chromium local replay passed the full ascent, lower-hold recovery and summit, rest/gap recovery and summit, independent and simultaneous mouse inputs, keyboard alternatives, arm reach bounds, pause/focus loss/reset, resizing, and zero uncaught browser errors after the initial material update. Subsequent changes only refined fading shadow shapes, decorative ledge silhouettes, sediment seams, and vegetation; a separate visual smoke run reported no browser errors.
+
+Reviewed desktop screenshots of both material iterations. Replaced overly hard rectangular shadows with fading shadows, broke up regular horizontal seams, and gave shelf undersides irregular silhouettes and surface grain. Physics geometry remains exactly the same. The visual check sampled 119 frame intervals in headless Edge at 1280×900: median 5 ms, 95th percentile 5.2 ms on this machine. This is a headless timing observation, not a promised user framerate or a hardware-wide benchmark.
+
+The scene remains stylized procedural 2D. These are automated input checks and screenshot reviews; human judgement of the art direction remains with the user. Public-route verification follows deployment.

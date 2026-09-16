@@ -59,3 +59,10 @@ User direction: get closer without going first-person; eventually discover good 
 Ring icons, the dotted route, always-visible reach circle, and world labels are removed. Grab points appear as stone flakes with a defined upper lip. Only the aimed edge receives a subtle light/rust eligibility highlight. Natural shelves replace metal decks without changing collision geometry. Input behavior and the previously tested physical route are preserved.
 
 This pass deliberately retains authored grab locations and generous pointer selection beneath the art. Future work should vary the rock silhouette and grip regions, add usable cracks and side-pulls, and validate reading the surface before introducing ambiguous grip quality or falls from weak holds. Human feedback on camera distance and art direction is the next gate.
+
+
+## Aesthetic polish — 16 September 2026
+
+User approved the close cliff direction and requested color, texture, and lighting before new mechanics. This pass uses golden-hour color contrast: warm ochre sandstone and pale sunlit upper planes against cool slate undersides and blue mountain haze. Cached multiscale procedural grain replaces the large flat wall facets. Mineral bands, tapered fissures, lichen colonies, irregular shelf undersides, ferns, and small flowers add material detail. Ledge shadows fade away from the wall contact. Distant ridges have lit planes, hints of snow, forest silhouettes, and layers of mist.
+
+The climber has a brighter teal fabric palette, seam highlights, warm reflected skin light, a gradient orange helmet, and a small metallic harness catch. Restrained seed flecks and gentle fern motion use simulation time, so they stop during pause. Interface contrast is increased over the brighter scene. Everything remains generated inside index.html without external assets or network requests. The camera, input mapping, hold placement, hit tolerance, collision surfaces, and physics are unchanged.

@@ -23,7 +23,7 @@ The left rest shelf supports your weight with no grips. Its right edge offers an
 
 ## Visual direction
 
-Close third-person cliff view, roughly three times the original desktop zoom: a shaded climber, articulated hands, weathered stone, natural ledges, a distant valley, and a quieter interface. This is an incremental art pass. Grab spots still use the tested fixed locations underneath the rock shapes; this is not yet a continuous surface with dynamically discovered grip quality. The next step is less regular rock geometry and judging usable features from their shape.
+Close third-person cliff view, roughly three times the original desktop zoom. The golden-hour art pass adds warm sandstone grain and mineral bands, cool shaded crevices, fading cast shadows, olive lichen and ferns, layered blue mountain ridges and mist, and drifting sunlit flecks. The climber wears a teal jacket with fabric seams, a shaded orange helmet, a harness, and metal gear. This is an incremental art pass. Grab spots still use the tested fixed locations underneath the rock shapes; this is not yet a continuous surface with dynamically discovered grip quality. The next step is less regular rock geometry and judging usable features from their shape.
 
 ## Status and limits
 
