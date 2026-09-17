@@ -21,6 +21,10 @@ The body pulls up naturally after a grip; W is no longer needed. Start by holdin
 
 The left rest shelf supports your weight with no grips. Its right edge offers an optional gap transfer to the rock lip to the right. A failed transfer can fall onto a lower hold or deck; restarting is optional.
 
+## Selected character direction
+
+[Option B — stylized 3D reference](docs/art-direction/option-b.png) is the accepted visual target. The playable character now has adult proportions, longer legs and torso, a smaller head, shorter 23-unit arm segments, rounded fabric shading, helmet highlights, a hood, and harness hardware. This first implementation still uses the self-contained 2D renderer; the reference is a direction, not a claim that its full 3D fidelity has already been achieved.
+
 ## Visual direction
 
 Close third-person cliff view, roughly three times the original desktop zoom. The golden-hour art pass adds warm sandstone grain and mineral bands, cool shaded crevices, fading cast shadows, olive lichen and ferns, layered blue mountain ridges and mist, and drifting sunlit flecks. The climber wears a teal jacket with fabric seams, a shaded orange helmet, a harness, and metal gear. This is an incremental art pass. Grab spots still use the tested fixed locations underneath the rock shapes; this is not yet a continuous surface with dynamically discovered grip quality. The next step is less regular rock geometry and judging usable features from their shape.
@@ -29,7 +33,7 @@ Close third-person cliff view, roughly three times the original desktop zoom. Th
 
 First playable slice implemented and verified locally and on GitHub Pages on 14 September 2026. Automated browser input replays completed an ascent, a lower-hold recovery followed by an ascent, and a rest-platform recovery through the gap route to the summit. These are automated replays, not human feel tests. See `docs/PLAYTEST.md` for evidence and remaining questions.
 
-Short arms with fixed-length upper/lower segments and bending elbows. Holds and decks have been repositioned for a 4.74 m ascent within that reach. Simplified point-mass physics with shoulder-based unilateral arm constraints, gravity, momentum-preserving releases, extra two-hand damping, and automatic feet on one-way decks. No fatigue, jumping, equipment, audio, ragdoll collisions, or touch controls. Desktop pointer play is supported; a keyboard provides optional lean, shortcuts, and alternate hand inputs. The 2D slice does not establish first-person depth perception or fear of height.
+Short arms with fixed-length upper/lower segments and bending elbows. Holds and decks have been repositioned for a 4.81 m ascent within that reach. Simplified point-mass physics with shoulder-based unilateral arm constraints, gravity, momentum-preserving releases, extra two-hand damping, and automatic feet on one-way decks. No fatigue, jumping, equipment, audio, ragdoll collisions, or touch controls. Desktop pointer play is supported; a keyboard provides optional lean, shortcuts, and alternate hand inputs. The 2D slice does not establish first-person depth perception or fear of height.
 
 ## Project map
 

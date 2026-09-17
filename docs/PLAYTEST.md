@@ -76,3 +76,14 @@ Automated Edge Chromium local replay passed the full ascent, lower-hold recovery
 Reviewed desktop screenshots of both material iterations. Replaced overly hard rectangular shadows with fading shadows, broke up regular horizontal seams, and gave shelf undersides irregular silhouettes and surface grain. Physics geometry remains exactly the same. The visual check sampled 119 frame intervals in headless Edge at 1280×900: median 5 ms, 95th percentile 5.2 ms on this machine. This is a headless timing observation, not a promised user framerate or a hardware-wide benchmark.
 
 The scene remains stylized procedural 2D. These are automated input checks and screenshot reviews; human judgement of the art direction remains with the user. Public-route verification follows deployment.
+
+
+## 2026-09-17 — option B character and human proportions
+
+Automated local Edge replay completed the whole main ascent; released, fell, caught lower hold 3 and finished; landed on the rest shelf, crossed the optional gap, and finished. It also passed mouse press/release ordering, simultaneous buttons, keyboard alternatives, shoulder constraint bounds, capped free-hand reach, pause during drag, focus loss, reset, and narrow-window input. Zero uncaught browser errors.
+
+The first gap-route replay failed after shortening the arms, proving the previous transfer was no longer reachable. The gap lip was moved inward and slightly higher; a fresh full replay then passed every route and check. Rest landing now verifies the new 60-unit sole offset. Body and level geometry changes were exercised through pointer events, not teleports.
+
+Inspected desktop beginning/mid-climb and 600×750 screenshots for arm proportions, head/torso/leg silhouette, grip connection, boot placement, and UI overlap. Removed prominent spherical elbow/knee overlays and replaced straight jacket marks with curved fold shading. Visual smoke check reported no errors; headless frame samples were roughly 5 ms median and 5.1 ms at the 95th percentile on this machine. These are automated checks and screenshot review, not a manual feel test or a general performance guarantee.
+
+Option B is a visual target. Current implementation is shaded 2D, not the generated concept's full 3D fidelity. Human feedback on the new proportions and material treatment is still needed.

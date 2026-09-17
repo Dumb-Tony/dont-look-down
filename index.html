@@ -7,13 +7,13 @@
 <canvas id="scene" aria-label="Climb the cliff. Hold left or right mouse button to move that hand. Release over a reachable hold to grip. A and D lean." tabindex="0"></canvas>
 <header class="top"><div><div class="eyebrow">NORTH FACE / GOLDEN HOUR</div><h1>DON'T LOOK DOWN.</h1><div class="subtitle">Find your footing. Follow the stone.</div></div><div class="tools"><button id="pause">Pause · P</button><button id="reset">Restart · R</button></div></header>
 <div id="toast">Hold a mouse button, move that hand to a rock edge, then let go.</div>
-<div class="bottom"><div class="guide"><strong>HOLD LEFT / RIGHT MOUSE</strong> release & move that hand<br><strong>LET GO OVER AN EDGE</strong> grip · your body pulls up naturally<br><strong>A D / ← →</strong> lean &nbsp; <strong>P</strong> pause &nbsp; <strong>R</strong> reset<br><span class="hint">Move one hand at a time. Planted hands stay put.<br>Q / E also work: hold to move, release to grip.</span></div><div class="readout"><div class="hands"><span class="hand" id="left">L · FREE</span><span class="hand" id="right">R · FREE</span></div><div class="height" id="height">0.0 m</div><div class="meter" id="progress">TO SUMMIT · 4.7 m</div></div></div>
+<div class="bottom"><div class="guide"><strong>HOLD LEFT / RIGHT MOUSE</strong> release & move that hand<br><strong>LET GO OVER AN EDGE</strong> grip · your body pulls up naturally<br><strong>A D / ← →</strong> lean &nbsp; <strong>P</strong> pause &nbsp; <strong>R</strong> reset<br><span class="hint">Move one hand at a time. Planted hands stay put.<br>Q / E also work: hold to move, release to grip.</span></div><div class="readout"><div class="hands"><span class="hand" id="left">L · FREE</span><span class="hand" id="right">R · FREE</span></div><div class="height" id="height">0.0 m</div><div class="meter" id="progress">TO SUMMIT · 4.8 m</div></div></div>
 <div class="overlay" id="overlay" hidden><div class="card"><div class="eyebrow" id="overline">TAKE A BREATH</div><h2 id="title">On hold.</h2><p id="message">Your grips and position are saved. Resume when you're ready.</p><button id="resume">Keep climbing</button></div></div>
 <script>
 'use strict';
 const canvas=document.getElementById('scene'),ctx=canvas.getContext('2d');
 const ui=Object.fromEntries(['pause','reset','toast','left','right','height','progress','overlay','overline','title','message','resume'].map(id=>[id,document.getElementById(id)]));
-const FLOOR=1450,REACH=58,MIN_ARM=18,RADIUS=23;
+const FLOOR=1450,REACH=46,MIN_ARM=10,RADIUS=60;
 const holds=[390,440,365,435,365,365,350,420,475,425,485,520,465,540,535].map((x,i)=>({x,y:1305-i*85,id:i}));
 holds.push({x:505,y:805,id:15,shortcut:true});
 const platforms=[{x:160,y:FLOOR,w:560,name:'BASE CAMP'},{x:280,y:920,w:125,name:'REST / NO RUSH'},{x:450,y:1080,w:125,name:'CATCH DECK'},{x:260,y:660,w:105,name:'LOWER CATCH'},{x:460,y:195,w:195,name:'SUMMIT'}];
@@ -23,27 +23,30 @@ for(const p of platforms){p.x=390+(p.x-390)*.4;p.y=FLOOR+(p.y-FLOOR)*.4;p.w*=.4;
 for(let i=0;i<15;i++)holds[i].x=390+i*3.5+(i%2?8:-8);
 platforms[1].x=386;platforms[1].w=48;platforms[1].y=holds[6].y+60;
 platforms[4].y=holds[14].y+60;
+for(const h of holds)h.y-=47;
+holds[15].x=420;holds[15].y-=6;
+platforms[1].y=holds[6].y+100;platforms[4].y=holds[14].y+100;
 const restDeck=platforms[1],topDeck=platforms[4];
 let control=[new Set(),new Set()],activeHand=0;
 let W,H,scale,camera,player,hands,keys={},pointer={x:0,y:0,active:false},paused=false,won=false,settle=0,time=0,attempts=0,best=0,feedback='',feedbackUntil=0,last=0,acc=0,grabs=0,falls=0;
-function resize(){W=innerWidth;H=innerHeight;const d=Math.min(devicePixelRatio||1,2);canvas.width=W*d;canvas.height=H*d;ctx.setTransform(d,0,0,d,0,0);scale=Math.min(3.4,W/310,H/260);}
+function resize(){W=innerWidth;H=innerHeight;const d=Math.min(devicePixelRatio||1,2);canvas.width=W*d;canvas.height=H*d;ctx.setTransform(d,0,0,d,0,0);scale=Math.min(2.8,W/350,H/310);}
 function say(s,d=3){feedback=s;feedbackUntil=time+d;ui.toast.textContent=s;}
 function reset(){player={x:390,y:FLOOR-RADIUS,vx:0,vy:0,ground:true};hands=[null,null];control=[new Set(),new Set()];activeHand=0;camera=player.y-22;keys={};pointer.active=false;won=false;paused=false;settle=0;time=0;best=0;grabs=0;falls=0;acc=0;attempts++;ui.overlay.hidden=true;ui.pause.textContent='Pause · P';say('Hold a mouse button, move that hand to a rock edge, then let go.',7);}
 function screen(p){return{x:W/2+(p.x-420)*scale,y:H*.53+(p.y-camera)*scale};}
 function world(p){return{x:420+(p.x-W/2)/scale,y:camera+(p.y-H*.53)/scale};}
 function target(){const p=pointer.active?world(pointer):holds[0];let near=null,d=14;for(const h of holds){let n=Math.hypot(h.x-p.x,h.y-p.y);if(n<d){near=h;d=n;}}return near;}
-function shoulder(i){return{x:player.x+(i?9:-9),y:player.y-12};}
+function shoulder(i){return{x:player.x+(i?11:-11),y:player.y-30};}
 function reachable(h,i){const a=shoulder(i);return !!h&&Math.hypot(h.x-a.x,h.y-a.y)<=REACH;}
 function beginHand(i,source){if(paused||won)return;control[i].add(source);activeHand=i;const wasHeld=!!hands[i];hands[i]=null;if(wasHeld&&!hands[1-i]&&!player.ground){falls++;say('Hand free. Move to a reachable rock edge, then let go.');}}
 function finishHand(i,source){if(!control[i].delete(source)||control[i].size||paused||won)return;const h=target();if(!h){say('Missed the rock edge. Hold the button to reach again.');return;}if(!reachable(h,i)){say('OUT OF REACH · move closer before letting go.');return;}const a=shoulder(i);hands[i]={id:h.id,length:Math.max(MIN_ARM,Math.hypot(h.x-a.x,h.y-a.y))};grabs++;say((i?'Right':'Left')+' grip set. Move the other hand when ready.');}
 function cancelHands(){control.forEach(c=>c.clear());}
-function handPosition(i){if(hands[i])return holds[hands[i].id];const a=shoulder(i);if(!control[i].size)return{x:a.x+(i?10:-10),y:a.y+29};const h=target(),p=h&&reachable(h,i)?h:world(pointer),dx=p.x-a.x,dy=p.y-a.y,d=Math.hypot(dx,dy)||1,k=Math.min(1,REACH/d);return{x:a.x+dx*k,y:a.y+dy*k};}
+function handPosition(i){if(hands[i])return holds[hands[i].id];const a=shoulder(i);if(!control[i].size)return{x:a.x+(i?3:-3),y:a.y+43};const h=target(),p=h&&reachable(h,i)?h:world(pointer),dx=p.x-a.x,dy=p.y-a.y,d=Math.hypot(dx,dy)||1,k=Math.min(1,REACH/d);return{x:a.x+dx*k,y:a.y+dy*k};}
 function pause(value=!paused){if(won)return;paused=value;keys={};cancelHands();acc=0;ui.pause.textContent=paused?'Resume · P':'Pause · P';ui.overlay.hidden=!paused;ui.overline.textContent='TAKE A BREATH';ui.title.textContent='On hold.';ui.message.textContent="Your grips and position are saved. Resume when you're ready.";ui.resume.textContent='Keep climbing';}
 function win(){won=true;keys={};cancelHands();ui.overlay.hidden=false;ui.overline.textContent='FIRST ASCENT / COMPLETE';ui.title.textContent='You made it up.';ui.message.textContent=`Both feet on the summit ledge. ${Math.floor(time/60)}:${String(Math.floor(time%60)).padStart(2,'0')} climbing · ${grabs} grips · ${falls} airborne releases. The way back was always there.`;ui.resume.textContent='Climb again';say('Summit ledge reached. Safe and settled.',100);}
 function step(dt){if(paused||won)return;time+=dt;const oldX=player.x,oldY=player.y;const count=hands.filter(Boolean).length,pull=count>0,lean=(keys.KeyD||keys.ArrowRight?1:0)-(keys.KeyA||keys.ArrowLeft?1:0);
 player.vx+=lean*(player.ground?640:480)*dt;player.vy+=820*dt;player.vx*=Math.exp(-(player.ground?9:count===2?3:0.22)*dt);player.vx=Math.max(-330,Math.min(330,player.vx));player.vy=Math.min(720,player.vy);
 player.x+=player.vx*dt;player.y+=player.vy*dt;
-if(pull){let contraction=65*dt;if(count===2){const a=holds[hands[0].id],b=holds[hands[1].id];contraction=Math.min(contraction,Math.max(0,(hands[0].length+hands[1].length-Math.hypot((a.x+9)-(b.x-9),a.y-b.y)-2)/2));}for(const hand of hands)if(hand)hand.length=Math.max(MIN_ARM,hand.length-contraction);}
+if(pull){let contraction=65*dt;if(count===2){const a=holds[hands[0].id],b=holds[hands[1].id];contraction=Math.min(contraction,Math.max(0,(hands[0].length+hands[1].length-Math.hypot((a.x+11)-(b.x-11),a.y-b.y)-2)/2));}for(const hand of hands)if(hand)hand.length=Math.max(MIN_ARM,hand.length-contraction);}
 for(let n=0;n<16;n++)for(let i=0;i<2;i++){const hand=hands[i];if(!hand)continue;const h=holds[hand.id],a=shoulder(i),dx=a.x-h.x,dy=a.y-h.y,d=Math.hypot(dx,dy);if(d>hand.length){player.x+=h.x+dx/d*hand.length-a.x;player.y+=h.y+dy/d*hand.length-a.y;}}
 player.x=Math.max(120,Math.min(730,player.x));player.ground=false;
 for(const p of platforms)if(player.x>p.x-5&&player.x<p.x+p.w+5&&oldY+RADIUS<=p.y+0.5&&player.y+RADIUS>=p.y){player.y=p.y-RADIUS;player.ground=true;}
@@ -118,29 +121,36 @@ for(const h of holds){const w=9+random(h.id+40)*5;castShadow([[h.x-w,h.y+4],[h.x
  if(h===aim){line(h.x-w+2,h.y-2,h.x+w-2,h.y-1,reachable(h,activeHand)?'#f0dfb8':'#a55e46',1.3);}
  if(hands.some(g=>g&&g.id===h.id)){for(let k=0;k<3;k++)line(h.x-3+k*2,h.y+1,h.x-3+k*2,h.y+3,'#e3d8bb',.6);}
 }
-// Climber seen from behind, with shaded clothes and planted palms.
-ctx.save();ctx.translate(player.x+5,player.y+6);ctx.scale(1,.85);ctx.fillStyle='#223f4c55';ctx.beginPath();ctx.ellipse(0,-9,18,39,-.15,0,Math.PI*2);ctx.fill();ctx.restore();
+// Option B direction: rounded materials, adult anatomy, and articulated clothing.
+function oval(x,y,rx,ry,light,dark,angle=0){const g=ctx.createRadialGradient(x-rx*.35,y-ry*.5,.2,x,y,Math.max(rx,ry)*1.2);g.addColorStop(0,light);g.addColorStop(1,dark);ctx.fillStyle=g;ctx.beginPath();ctx.ellipse(x,y,rx,ry,angle,0,Math.PI*2);ctx.fill();}
+function limb(a,b,width,light,dark){const dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||1,nx=-dy/d,ny=dx/d,g=ctx.createLinearGradient(a.x+nx*width/2,a.y+ny*width/2,a.x-nx*width/2,a.y-ny*width/2);g.addColorStop(0,dark);g.addColorStop(.33,light);g.addColorStop(.7,light);g.addColorStop(1,dark);ctx.strokeStyle=g;ctx.lineWidth=width;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}
+ctx.save();ctx.translate(player.x+8,player.y+8);ctx.fillStyle='#142d3a40';ctx.beginPath();ctx.ellipse(0,-2,19,62,-.08,0,6.28);ctx.fill();ctx.restore();
 ctx.lineCap='round';ctx.lineJoin='round';
-for(let i=0;i<2;i++){const side=i?1:-1,kneeX=player.x+side*(10+(player.ground?0:3))-player.vx*.008,kneeY=player.y+12,footX=player.x+side*11-player.vx*.012;
- line(player.x+side*6,player.y+3,kneeX,kneeY,'#253c50',8);line(kneeX,kneeY,footX,player.y+21,'#374e60',6);line(kneeX-side*1.5,kneeY,footX-side*1.5,player.y+19,'#84989a',1);
- line(footX-side*2,player.y+21,footX+side*4,player.y+22,'#252d2d',5);line(footX-side*2,player.y+23,footX+side*4,player.y+23,'#999681',.9);
+// Hips, long thighs, and calves. Both soles meet the actual collision plane.
+for(let i=0;i<2;i++){const side=i?1:-1,hip={x:player.x+side*6,y:player.y+7},foot={x:player.x+side*9-player.vx*.012,y:player.y+RADIUS-3},knee={x:player.x+side*(player.ground?8:13),y:player.y+32};
+limb(hip,knee,10,'#536577','#202e40');limb(knee,foot,7.5,'#536477','#263344');line(knee.x-2,knee.y+1,knee.x+2,knee.y,'#91a1aa33',.55);
+line(knee.x-side*2,knee.y+5,foot.x-side*2,foot.y-5,'#8a93954a',.6);line(hip.x+side*3,hip.y+4,knee.x+side*3,knee.y-3,'#15293b',.6);
+oval(foot.x+side*1.5,foot.y,5,3,'#b6ad7b','#263037',side*.15);line(foot.x-4,foot.y+2.4,foot.x+4,foot.y+2.4,'#121f2a',1.2);line(foot.x-2,foot.y-1,foot.x+2,foot.y-1,'#d6bd82',.8);
 }
-for(let i=0;i<2;i++){const a=shoulder(i),h=handPosition(i),dx=h.x-a.x,dy=h.y-a.y,d=Math.hypot(dx,dy)||.001,bend=Math.sqrt(Math.max(0,(REACH/2)**2-(Math.min(d,REACH)/2)**2)),side=i?1:-1,e={x:(a.x+h.x)/2-dy/d*bend*side,y:(a.y+h.y)/2+dx/d*bend*side};
- line(a.x,a.y,e.x,e.y,'#205260',7);line(a.x-1,a.y-1,e.x-1,e.y-1,'#73a9a5',2);line(e.x,e.y,h.x,h.y,'#397d85',5);line(e.x-1,e.y-1,h.x-1,h.y-1,'#b0c6af',1);
- const cuff={x:h.x+(e.x-h.x)*.16,y:h.y+(e.y-h.y)*.16};line(cuff.x,cuff.y,h.x,h.y,'#c5aa85',4);
- ctx.fillStyle='#d3bc95';ctx.beginPath();ctx.ellipse(h.x,h.y,3,2.5,Math.atan2(dy,dx),0,Math.PI*2);ctx.fill();
- if(control[i].size){for(let k=0;k<3;k++)line(h.x+(k-1)*1.5,h.y,h.x+(k-1)*2,h.y-3,'#d3bc95',1);}else if(hands[i])for(let k=0;k<3;k++)line(h.x-2+k*1.5,h.y,h.x-2+k*1.5,h.y+2,'#a88b67',.7);
+// Each arm has two 23-unit bones; the elbow folds without an oversized sideways bow.
+for(let i=0;i<2;i++){const a=shoulder(i),h=handPosition(i),dx=h.x-a.x,dy=h.y-a.y,d=Math.hypot(dx,dy)||.001,bend=Math.sqrt(Math.max(0,23**2-(Math.min(d,REACH)/2)**2)),side=i?1:-1,e={x:(a.x+h.x)/2-dy/d*bend*side,y:(a.y+h.y)/2+dx/d*bend*side};
+limb(a,e,8,'#478e99','#183e50');limb(e,h,6,'#4a939d','#204956');
+const cuff={x:h.x+(e.x-h.x)*.14,y:h.y+(e.y-h.y)*.14};limb(cuff,h,4,'#dbb693','#946c50');oval(h.x,h.y,2.5,3,'#e6c3a1','#ac8264',Math.atan2(dy,dx)-Math.PI/2);
+for(let k=0;k<3;k++)line(h.x-1.7+k*1.5,h.y,h.x-1.7+k*1.5,h.y+(control[i].size?-3:2),'#bd9778',.65);
+line(e.x-1,e.y+2,e.x+2,e.y+3,'#afd1c23c',.7);
 }
-polygon([[player.x-11,player.y-18],[player.x+9,player.y-19],[player.x+13,player.y-9],[player.x+9,player.y+7],[player.x-9,player.y+7],[player.x-13,player.y-8]],'#2b7880');
-polygon([[player.x-11,player.y-18],[player.x-4,player.y-18],[player.x-5,player.y+4],[player.x-9,player.y+7],[player.x-13,player.y-8]],'#6eaca6');
-line(player.x+7,player.y-14,player.x+6,player.y+2,'#194e5a',2);line(player.x-8,player.y+3,player.x+9,player.y+3,'#a9895d',3);line(player.x-8,player.y+4,player.x-4,player.y+12,'#a9895d',1.4);line(player.x+8,player.y+4,player.x+4,player.y+12,'#a9895d',1.4);
-ctx.fillStyle='#d87843';ctx.beginPath();ctx.roundRect(player.x-4,player.y,8,11,2);ctx.fill();line(player.x-4,player.y+1,player.x+4,player.y+1,'#d4b58a',1.5);
-ctx.fillStyle='#b59672';ctx.beginPath();ctx.ellipse(player.x,player.y-22,5,6,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#43473d';ctx.beginPath();ctx.ellipse(player.x,player.y-28,8,9,.08,0,Math.PI*2);ctx.fill();
-const helmet=ctx.createLinearGradient(player.x-9,player.y-38,player.x+8,player.y-24);helmet.addColorStop(0,'#ffd18a');helmet.addColorStop(.35,'#e7994f');helmet.addColorStop(1,'#a94d2c');ctx.fillStyle=helmet;ctx.beginPath();ctx.ellipse(player.x-1,player.y-31,9,7,.08,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#e0b184';ctx.lineWidth=1;ctx.beginPath();ctx.ellipse(player.x-2,player.y-33,5,3,-.2,Math.PI,Math.PI*1.8);ctx.stroke();line(player.x-8,player.y-28,player.x+8,player.y-27,'#6d5241',1.8);for(let i=0;i<3;i++)line(player.x-4+i*4,player.y-33,player.x-4+i*4,player.y-31,'#835f47',1);
-// Jacket seams, fabric weave, and small metal catches.
-line(player.x-2,player.y-17,player.x-1,player.y-2,'#a9c7b470',.55);line(player.x-8,player.y-11,player.x-4,player.y-8,'#133f4855',.65);line(player.x+1,player.y-5,player.x+7,player.y-7,'#123b4655',.65);
-for(let j=0;j<10;j++)line(player.x-6,player.y-14+j*1.5,player.x-3,player.y-14+j*1.5,'#d2e0c326',.3);
-ctx.strokeStyle='#e4cf9c';ctx.lineWidth=.85;ctx.beginPath();ctx.ellipse(player.x+10,player.y+4,1.6,3,.3,0,6.28);ctx.stroke();
+// Sculpted jacket: narrower waist, rounded shoulder line, three dimensional folds.
+const coat=ctx.createLinearGradient(player.x-14,0,player.x+14,0);coat.addColorStop(0,'#173d50');coat.addColorStop(.22,'#529ca5');coat.addColorStop(.5,'#367888');coat.addColorStop(.8,'#245869');coat.addColorStop(1,'#16384a');
+ctx.fillStyle=coat;ctx.beginPath();ctx.moveTo(player.x-7,player.y-36);ctx.bezierCurveTo(player.x-15,player.y-34,player.x-15,player.y-28,player.x-12,player.y-18);ctx.lineTo(player.x-10,player.y+4);ctx.quadraticCurveTo(player.x,player.y+8,player.x+10,player.y+4);ctx.lineTo(player.x+12,player.y-18);ctx.bezierCurveTo(player.x+15,player.y-30,player.x+14,player.y-34,player.x+7,player.y-36);ctx.closePath();ctx.fill();
+oval(player.x,player.y-31,9,8,'#538d96','#224859');ctx.strokeStyle='#87b3b066';ctx.lineWidth=.7;ctx.beginPath();ctx.moveTo(player.x-7,player.y-34);ctx.quadraticCurveTo(player.x,player.y-22,player.x+7,player.y-34);ctx.stroke();
+for(let j=0;j<5;j++){const y=player.y-19+j*4;ctx.strokeStyle='#a4c3b72f';ctx.lineWidth=.65;ctx.beginPath();ctx.moveTo(player.x-10,y);ctx.quadraticCurveTo(player.x-7,y+1,player.x-2,y-2);ctx.stroke();ctx.strokeStyle='#11344566';ctx.beginPath();ctx.moveTo(player.x+3,y+1);ctx.quadraticCurveTo(player.x+6,y+2,player.x+10,y-1);ctx.stroke();}line(player.x,player.y-21,player.x+1,player.y+2,'#143c4b77',.6);
+// Webbing has hardware and leg loops, rather than a belt painted on the torso.
+limb({x:player.x-10,y:player.y+3},{x:player.x+10,y:player.y+3},3,'#c6a467','#765a37');for(let side of [-1,1]){ctx.strokeStyle='#a8834f';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(player.x+side*7,player.y+14,5.5,2.3,side*.3,0,6.28);ctx.stroke();line(player.x+side*9,player.y+4,player.x+side*7,player.y+15,'#b6945f',1.3);}
+oval(player.x-2,player.y+7,4.5,7,'#dc9554','#8e492b');oval(player.x-2,player.y+1,4.5,1.6,'#d3b480','#604935');ctx.strokeStyle='#dfd3a9';ctx.lineWidth=.9;ctx.beginPath();ctx.ellipse(player.x+11,player.y+7,1.8,3.5,.3,0,6.28);ctx.stroke();
+// Small adult head, hair, neck, and a lit sculpted helmet.
+oval(player.x,player.y-38,3.4,5,'#c99e79','#7f634b');oval(player.x,player.y-45,6.1,7.6,'#a17b59','#3c3e37');oval(player.x,player.y-43,5.9,4,'#50473b','#282e2c');for(let k=0;k<6;k++)line(player.x-4+k*1.5,player.y-44,player.x-3+k*1.2,player.y-40,'#77604c88',.6);
+const helmet=ctx.createRadialGradient(player.x-3,player.y-51,1,player.x,player.y-48,10);helmet.addColorStop(0,'#ffd396');helmet.addColorStop(.4,'#e69a50');helmet.addColorStop(1,'#a9572e');ctx.fillStyle=helmet;ctx.beginPath();ctx.ellipse(player.x,player.y-49,7.4,6.2,0,0,6.28);ctx.fill();
+ctx.strokeStyle='#f2c58a88';ctx.lineWidth=.8;ctx.beginPath();ctx.ellipse(player.x-1,player.y-51,4.9,2.8,-.2,Math.PI,Math.PI*1.9);ctx.stroke();line(player.x-6.8,player.y-46,player.x+6.8,player.y-46,'#74462d',1.1);for(let i=0;i<3;i++)limb({x:player.x-3+i*3,y:player.y-51},{x:player.x-3+i*3,y:player.y-49},1.1,'#75482f','#543d2d');
 ctx.restore();
 // Restrained sun bloom and airborne seed flecks; motion stops with simulation pause.
 const glow=ctx.createRadialGradient(0,H*.12,0,0,H*.12,W*.58);glow.addColorStop(0,'#ffde9742');glow.addColorStop(1,'#ffde9700');ctx.fillStyle=glow;ctx.fillRect(0,0,W,H);
@@ -158,6 +168,6 @@ addEventListener('keydown',e=>{if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight
 addEventListener('keyup',e=>{keys[e.code]=false;if(e.code==='KeyQ')finishHand(0,'key');if(e.code==='KeyE')finishHand(1,'key');});
 addEventListener('blur',()=>pause(true));document.addEventListener('visibilitychange',()=>{if(document.hidden)pause(true);});addEventListener('resize',resize);ui.pause.onclick=()=>pause();ui.reset.onclick=reset;ui.resume.onclick=()=>won?reset():pause(false);
 // Read-only observations for reproducible browser input replays. No state mutation API.
-window.climb={snapshot:()=>({player:{...player},hands:hands.map(h=>h?{...h}:null),moving:control.map(c=>!!c.size),handPositions:[handPosition(0),handPosition(1)],shoulders:[shoulder(0),shoulder(1)],holds,platforms,paused,won,time,grabs,falls,settle,reach:REACH,camera,scale,viewport:{W,H},target:target()?.id}),screen:id=>screen(holds[id])};
+window.climb={snapshot:()=>({player:{...player},hands:hands.map(h=>h?{...h}:null),moving:control.map(c=>!!c.size),handPositions:[handPosition(0),handPosition(1)],shoulders:[shoulder(0),shoulder(1)],holds,platforms,paused,won,time,grabs,falls,settle,reach:REACH,footOffset:RADIUS,camera,scale,viewport:{W,H},target:target()?.id}),screen:id=>screen(holds[id])};
 resize();reset();requestAnimationFrame(frame);
 </script></body></html>

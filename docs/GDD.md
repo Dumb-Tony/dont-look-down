@@ -66,3 +66,12 @@ This pass deliberately retains authored grab locations and generous pointer sele
 User approved the close cliff direction and requested color, texture, and lighting before new mechanics. This pass uses golden-hour color contrast: warm ochre sandstone and pale sunlit upper planes against cool slate undersides and blue mountain haze. Cached multiscale procedural grain replaces the large flat wall facets. Mineral bands, tapered fissures, lichen colonies, irregular shelf undersides, ferns, and small flowers add material detail. Ledge shadows fade away from the wall contact. Distant ridges have lit planes, hints of snow, forest silhouettes, and layers of mist.
 
 The climber has a brighter teal fabric palette, seam highlights, warm reflected skin light, a gradient orange helmet, and a small metallic harness catch. Restrained seed flecks and gentle fern motion use simulation time, so they stop during pause. Interface contrast is increased over the brighter scene. Everything remains generated inside index.html without external assets or network requests. The camera, input mapping, hold placement, hit tolerance, collision surfaces, and physics are unchanged.
+
+
+## Accepted character direction — 17 September 2026
+
+The user selected option B (stylized 3D), preserved in `docs/art-direction/option-b.png`. Move toward rounded, sculpted forms and plausible adult anatomy. This implementation uses shaded 2D primitives and articulated limbs rather than a true 3D model; the selected concept remains the quality target.
+
+Proportions now span approximately 115 world units from helmet to sole, with a smaller head, shoulder-to-hip torso, and substantially longer thighs/calves. Each upper arm and forearm is 23 units (previously 29), maximum shoulder reach 46 (previously 58). Retraction minimum is 10. Shoulders sit 30 units above the body origin and 11 units either side; the foot collision offset is 60. Standing hands hang near upper thigh rather than producing wide bent elbows. Jacket gradients, hood, cloth folds, hair, helmet, and harness loops/hardware replace the former compact character silhouette.
+
+Holds move up 47 units to suit the taller body's starting shoulders. Rest and summit shelves sit 100 units below their associated upper holds. The alternate gap lip moves inward to x=420 and 6 units higher after full-route testing showed its previous reach was impossible. The new summit is 4.81 m above base. Camera scale is 2.8 on a large viewport to retain head-and-feet framing. Input semantics are unchanged.
