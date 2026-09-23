@@ -96,3 +96,6 @@ Local automated Edge replay passed the complete main ascent, falling catch and c
 Reviewed sharp-cliff screenshots at the start and mid-climb, and corrected the atlas torso placement to join the shoulder artwork. A subsequent visual smoke check reported no errors and sampled approximately 5 ms median / 5.1 ms 95th-percentile RAF intervals in headless Edge. This is not a general performance guarantee. Generated assets now load before simulation begins.
 
 These are automated input replays and visual screenshot inspection, not a human feel test. Human testing is especially important for finding the subtler authored fissures; many decorative image cracks remain noninteractive. Public verification is recorded after deployment.
+
+Public verification: Pages deployment 35814447234 succeeded for 6948a8079f400da776bea3470151de14cb3c64d8. The complete replay passed on https://dumb-tony.github.io/dont-look-down/ with all ascent/recovery, seam-anchor, input, pause/reset/resize and browser-error checks passing. Public HTML matched the local build after line-ending normalization.
+
