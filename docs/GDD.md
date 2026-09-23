@@ -75,3 +75,10 @@ The user selected option B (stylized 3D), preserved in `docs/art-direction/optio
 Proportions now span approximately 115 world units from helmet to sole, with a smaller head, shoulder-to-hip torso, and substantially longer thighs/calves. Each upper arm and forearm is 23 units (previously 29), maximum shoulder reach 46 (previously 58). Retraction minimum is 10. Shoulders sit 30 units above the body origin and 11 units either side; the foot collision offset is 60. Standing hands hang near upper thigh rather than producing wide bent elbows. Jacket gradients, hood, cloth folds, hair, helmet, and harness loops/hardware replace the former compact character silhouette.
 
 Holds move up 47 units to suit the taller body's starting shoulders. Rest and summit shelves sit 100 units below their associated upper holds. The alternate gap lip moves inward to x=420 and 6 units higher after full-route testing showed its previous reach was impossible. The new summit is 4.81 m above base. Camera scale is 2.8 on a large viewport to retain head-and-feet framing. Input semantics are unchanged.
+
+
+## Higgsfield asset pass — 22 September 2026
+
+The user requested Higgsfield assets and a believable cliff with less obvious handholds. The playable scene now uses generated sandstone, canyon scenery, and an articulated transparent character atlas. High-resolution source artwork is encoded as WebP and embedded into the standalone HTML. Generation records live beside the source assets.
+
+Discrete block-shaped holds are replaced by small, sloping fissure regions. Pointer selection accepts points within 9 world units of a seam; seam half-width varies from 9 to 15 units. Grips store the selected x/y coordinates and remain fixed there. Arm reach and all authored route centers, gravity, recovery decks, and input semantics remain unchanged. Tiny aimed-only highlights and a tactile text cue assist discovery. This remains authored geometry, not arbitrary image-based grip detection. Not every visible geological feature supports a grip.

@@ -4,7 +4,7 @@ A standalone 2D physical climbing prototype: two independent hands, body momentu
 
 ## Play
 
-**[Play Don't Look Down](https://dumb-tony.github.io/dont-look-down/)** — public deployment verified on 14 September 2026.
+**[Play Don't Look Down](https://dumb-tony.github.io/dont-look-down/)** — public deployment verified on 22 September 2026.
 
 You can also open `index.html` directly in a desktop browser. No installation, build, network requests, or external assets are required.
 
@@ -23,11 +23,15 @@ The left rest shelf supports your weight with no grips. Its right edge offers an
 
 ## Selected character direction
 
-[Option B — stylized 3D reference](docs/art-direction/option-b.png) is the accepted visual target. The playable character now has adult proportions, longer legs and torso, a smaller head, shorter 23-unit arm segments, rounded fabric shading, helmet highlights, a hood, and harness hardware. This first implementation still uses the self-contained 2D renderer; the reference is a direction, not a claim that its full 3D fidelity has already been achieved.
+[Option B — stylized 3D reference](docs/art-direction/option-b.png) is the accepted visual target. The playable character uses a Higgsfield-generated transparent body-part atlas, articulated with the existing arm constraints. Adult proportions and 23-unit arm bones are retained. This is a 2D game using generated raster artwork, not a 3D character model.
 
 ## Visual direction
 
-Close third-person cliff view, roughly three times the original desktop zoom. The golden-hour art pass adds warm sandstone grain and mineral bands, cool shaded crevices, fading cast shadows, olive lichen and ferns, layered blue mountain ridges and mist, and drifting sunlit flecks. The climber wears a teal jacket with fabric seams, a shaded orange helmet, a harness, and metal gear. This is an incremental art pass. Grab spots still use the tested fixed locations underneath the rock shapes; this is not yet a continuous surface with dynamically discovered grip quality. The next step is less regular rock geometry and judging usable features from their shape.
+Higgsfield-generated sandstone fills the close cliff view, with detailed fissures, mineral grain, golden-hour lighting, and an atmospheric canyon background. Small authored crack patches replace the separate block-shaped holds. Aim along a patch and release: the hand plants at that position on the seam, rather than snapping to its center. A restrained highlight and message appear while probing a usable edge.
+
+The grip patches and resting surfaces remain authored; decorative cracks are not all climbable, and the game does not infer grip quality from image pixels. Route readability needs human playtesting. The character atlas is articulated in Canvas, with simpler movement and depth than the visual reference.
+
+Generated source PNGs, encoded WebPs, and provenance are in `assets/higgsfield/`. Run `python scripts/embed_assets.py` with Pillow to rebuild the embedded pack. The approximately 6.2 MB standalone HTML includes every runtime image and works offline.
 
 ## Status and limits
 

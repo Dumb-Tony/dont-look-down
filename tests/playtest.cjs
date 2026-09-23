@@ -3,13 +3,15 @@ const assert=require('node:assert/strict');
 (async()=>{
 const browser=await chromium.launch({headless:true,channel:'msedge'});
 const page=await browser.newPage({viewport:{width:1280,height:900}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
-await page.clock.install();await page.goto(process.env.PLAYTEST_URL || require('node:url').pathToFileURL(require('node:path').resolve(__dirname,'../index.html')).href);await page.clock.runFor(200);
+await page.clock.install();await page.goto(process.env.PLAYTEST_URL || require('node:url').pathToFileURL(require('node:path').resolve(__dirname,'../index.html')).href);await page.waitForFunction(()=>window.climb?.snapshot().assetsReady);await page.clock.runFor(200);
 const snap=()=>page.evaluate(()=>climb.snapshot()),wait=ms=>page.clock.runFor(ms),button=i=>i?'right':'left';
 async function aim(id){const p=await page.evaluate(id=>climb.screen(id),id);await page.mouse.move(p.x,p.y);}
 async function key(k){await page.keyboard.press(k);await wait(30);}
 async function release(i){await page.mouse.move(150,450);await page.mouse.down({button:button(i)});await page.mouse.up({button:button(i)});}
 async function place(id,i){await page.mouse.down({button:button(i)});assert.equal((await snap()).hands[i],null,'press frees the hand immediately');await wait(1000);await aim(id);let moving=await snap();assert.equal(moving.moving[i],true);assert.equal(moving.hands[i],null,'moving onto ring never grabs before release');await page.mouse.up({button:button(i)});let s=await snap();assert.equal(s.hands[i]?.id,id,`grab ${id}: ${JSON.stringify(s.player)}`);await wait(800);}
 await aim(3);await page.mouse.down();await page.mouse.up();assert.equal((await snap()).hands[0],null);assert.match(await page.locator('#toast').innerText(),/OUT OF REACH/);
+// An off-center catch plants at the actual point along the fissure.
+await aim(0);const edge=await page.evaluate(()=>climb.screen(0)),sc=(await snap()).scale;await page.mouse.move(edge.x+5*sc,edge.y-.8*sc);await page.mouse.down();await page.mouse.up();let edgeGrip=(await snap()).hands[0];assert.ok(edgeGrip&&Math.abs(edgeGrip.x-(await snap()).holds[0].x-5)<1/sc,'catch at a point along the seam');await page.mouse.move(100,450);assert.equal((await snap()).hands[0].x,edgeGrip.x,'planted point stays fixed when pointer moves');await key('r');
 await place(0,0);await page.screenshot({path:'tests/short-arms.png'});
 for(let id=1;id<15;id++){await place(id,id%2);if(id===6)await page.screenshot({path:'tests/cliff-mid.png'});}
 await release(1);await wait(1000);await release(0);await wait(2000);assert.equal((await snap()).won,true,'main route settles on summit');console.log('MAIN ASCENT PASS');await page.screenshot({path:'tests/summit.png'});
@@ -21,4 +23,3 @@ await page.mouse.down();await page.mouse.move(1200,500);let stretched=await snap
 await page.mouse.down({button:'right'});await page.evaluate(()=>dispatchEvent(new Event('blur')));assert.ok((await snap()).paused);await page.mouse.up({button:'right'});await page.locator('#resume').click();assert.deepEqual((await snap()).moving,[false,false]);await key('r');
 await page.setViewportSize({width:600,height:750});await wait(200);await place(0,0);await page.screenshot({path:'tests/narrow.png'});await page.setViewportSize({width:1280,height:900});await key('r');await wait(200);await page.screenshot({path:'tests/start.png'});assert.deepEqual(errors,[]);console.log('INPUT CHORDS, KEYBOARD, REACH LIMIT, PAUSE, BLUR, RESET, RESIZE, ERRORS PASS');await browser.close();
 })().catch(e=>{console.error(e);process.exit(1)});
-

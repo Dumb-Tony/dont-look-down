@@ -87,3 +87,12 @@ The first gap-route replay failed after shortening the arms, proving the previou
 Inspected desktop beginning/mid-climb and 600×750 screenshots for arm proportions, head/torso/leg silhouette, grip connection, boot placement, and UI overlap. Removed prominent spherical elbow/knee overlays and replaced straight jacket marks with curved fold shading. Visual smoke check reported no errors; headless frame samples were roughly 5 ms median and 5.1 ms at the 95th percentile on this machine. These are automated checks and screenshot review, not a manual feel test or a general performance guarantee.
 
 Option B is a visual target. Current implementation is shaded 2D, not the generated concept's full 3D fidelity. Human feedback on the new proportions and material treatment is still needed.
+
+
+## 2026-09-22 — Higgsfield artwork and fissure grips
+
+Local automated Edge replay passed the complete main ascent, falling catch and continued ascent, rest landing and gap route through the summit. Independent/chorded mouse controls, Q/E, reach limits, pause/blur/reset, narrow resizing, and uncaught-error checks passed. A new off-center seam catch checks that the anchor follows the chosen position (within one screen pixel of pointer rounding) and remains fixed when the pointer moves.
+
+Reviewed sharp-cliff screenshots at the start and mid-climb, and corrected the atlas torso placement to join the shoulder artwork. A subsequent visual smoke check reported no errors and sampled approximately 5 ms median / 5.1 ms 95th-percentile RAF intervals in headless Edge. This is not a general performance guarantee. Generated assets now load before simulation begins.
+
+These are automated input replays and visual screenshot inspection, not a human feel test. Human testing is especially important for finding the subtler authored fissures; many decorative image cracks remain noninteractive. Public verification is recorded after deployment.
