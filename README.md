@@ -49,3 +49,7 @@ Short arms with fixed-length upper/lower segments and bending elbows. Holds and 
 - `tests/playtest.cjs` — browser input regression replay; no game-state mutation
 
 The game has no dependencies. Optional regression tooling requires Node, Playwright, and installed Microsoft Edge: run `node tests/playtest.cjs` with Playwright available, or set `PLAYWRIGHT_MODULE` to its module path. Set `PLAYTEST_URL` to test a deployed copy instead of the local file. Screenshots are generated into `tests/` and excluded from Git.
+
+## Finding your first grip
+
+The starting edge is marked beside the climber's head. Hold the left mouse button, move onto that edge, then release. Whenever you hold either hand's button, reachable edges light up before you aim at them. These are temporary discovery cues; the first-grip label disappears once you catch. The first two catches are also checked using screenshot-selected pixel positions (`tests/discovery.cjs`), alongside the complete route replays.

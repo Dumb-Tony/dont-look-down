@@ -99,3 +99,11 @@ These are automated input replays and visual screenshot inspection, not a human 
 
 Public verification: Pages deployment 35814447234 succeeded for 6948a8079f400da776bea3470151de14cb3c64d8. The complete replay passed on https://dumb-tony.github.io/dont-look-down/ with all ascent/recovery, seam-anchor, input, pause/reset/resize and browser-error checks passing. Public HTML matched the local build after line-ending normalization.
 
+
+## 2026-09-24 — starting grip discoverability repair
+
+User reported the game was unplayable because no starting grip could be found. The prior full-route tests knew hold coordinates, so they proved reachability without proving discoverability. The initial fissure was almost invisible and overlapped the character; eligibility feedback required finding it first.
+
+Moved the first grip left and 8 units higher, outside the starting helmet silhouette. Added a persistent first-grip label and edge accent until the first successful catch. While a hand button is held, every edge reachable by that hand gets a contrasting seam accent, before pointer targeting; accents render over the character. Unselected fissures have stronger rock shading. No automatic grips or longer arms were added.
+
+Local Edge checks: full ascent, lower-catch recovery/ascent, rest/gap recovery/ascent, input/constraint/pause/blur/reset/resize checks all passed with zero browser errors. Inspected start and reaching screenshots. Added tests/discovery.cjs, which clicks the first two edges at pixel locations chosen from screenshots without using hold coordinates or the screen-transform helper; both catches passed. This is screenshot-guided automated input, not a human feel test. Visual smoke timing remained approximately 5 ms median and 5.1 ms p95 in headless Edge.

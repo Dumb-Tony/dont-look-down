@@ -82,3 +82,7 @@ Holds move up 47 units to suit the taller body's starting shoulders. Rest and su
 The user requested Higgsfield assets and a believable cliff with less obvious handholds. The playable scene now uses generated sandstone, canyon scenery, and an articulated transparent character atlas. High-resolution source artwork is encoded as WebP and embedded into the standalone HTML. Generation records live beside the source assets.
 
 Discrete block-shaped holds are replaced by small, sloping fissure regions. Pointer selection accepts points within 9 world units of a seam; seam half-width varies from 9 to 15 units. Grips store the selected x/y coordinates and remain fixed there. Arm reach and all authored route centers, gravity, recovery decks, and input semantics remain unchanged. Tiny aimed-only highlights and a tactile text cue assist discovery. This remains authored geometry, not arbitrary image-based grip detection. Not every visible geological feature supports a grip.
+
+## Starting-edge feedback — 24 September 2026
+
+The initial Higgsfield pass hid the authored grips too well. A starting edge clear of the character now carries a first-grip cue until a successful catch. Holding a hand button reveals all edges reachable by that hand, regardless of pointer position. Feedback renders over the climber to avoid occlusion. This explicit discovery assistance is a usability repair while natural surface reading is developed. First grip moves to x=366 and 8 units higher; full success and recovery routes remain validated.

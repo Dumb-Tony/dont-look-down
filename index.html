@@ -28,13 +28,15 @@ platforms[1].x=386;platforms[1].w=48;platforms[1].y=holds[6].y+60;
 platforms[4].y=holds[14].y+60;
 for(const h of holds)h.y-=47;
 holds[15].x=420;holds[15].y-=6;
+// Keep the first edge clear of the helmet and visibly within the left hand’s reach.
+holds[0].x=366;holds[0].y-=8;
 platforms[1].y=holds[6].y+100;platforms[4].y=holds[14].y+100;
 const restDeck=platforms[1],topDeck=platforms[4];
 let control=[new Set(),new Set()],activeHand=0;
 let W,H,scale,camera,player,hands,keys={},pointer={x:0,y:0,active:false},paused=false,won=false,settle=0,time=0,attempts=0,best=0,feedback='',feedbackUntil=0,last=0,acc=0,grabs=0,falls=0;
 function resize(){W=innerWidth;H=innerHeight;const d=Math.min(devicePixelRatio||1,2);canvas.width=W*d;canvas.height=H*d;ctx.setTransform(d,0,0,d,0,0);scale=Math.min(2.8,W/350,H/310);}
 function say(s,d=3){feedback=s;feedbackUntil=time+d;ui.toast.textContent=s;}
-function reset(){player={x:390,y:FLOOR-RADIUS,vx:0,vy:0,ground:true};hands=[null,null];control=[new Set(),new Set()];activeHand=0;camera=player.y-22;keys={};pointer.active=false;won=false;paused=false;settle=0;time=0;best=0;grabs=0;falls=0;acc=0;attempts++;ui.overlay.hidden=true;ui.pause.textContent='Pause · P';say('Hold a mouse button, move that hand to a rock edge, then let go.',7);}
+function reset(){player={x:390,y:FLOOR-RADIUS,vx:0,vy:0,ground:true};hands=[null,null];control=[new Set(),new Set()];activeHand=0;camera=player.y-22;keys={};pointer.active=false;won=false;paused=false;settle=0;time=0;best=0;grabs=0;falls=0;acc=0;attempts++;ui.overlay.hidden=true;ui.pause.textContent='Pause · P';say('Start at the marked edge: hold LEFT mouse, move there, then release.',7);}
 function screen(p){return{x:W/2+(p.x-420)*scale,y:H*.53+(p.y-camera)*scale};}
 function world(p){return{x:420+(p.x-W/2)/scale,y:camera+(p.y-H*.53)/scale};}
 function target(){const p=pointer.active?world(pointer):holds[0];let near=null,d=9;for(const h of holds){const half=9+(h.id%4)*2,slope=((h.id%3)-1)*.16,x=Math.max(h.x-half,Math.min(h.x+half,p.x)),y=h.y+(x-h.x)*slope,n=Math.hypot(x-p.x,y-p.y);if(n<d){near={...h,x,y};d=n;}}return near;}
@@ -60,7 +62,7 @@ if(player.ground){player.vy=0;if(player.y===restDeck.y-RADIUS&&time>feedbackUnti
 // No release impulse: velocity comes from the last constrained body displacement.
 const top=platforms[4];if(player.ground&&Math.abs(player.y+RADIUS-top.y)<1&&player.x>=top.x&&player.x<=top.x+top.w&&Math.abs(player.vx)<18)settle+=dt;else settle=0;if(settle>.75)win();
 best=Math.max(best,(FLOOR-RADIUS-player.y)/100);camera+=(player.y-22-camera)*(1-Math.exp(-4*dt));
-if(time>feedbackUntil)ui.toast.textContent=count===2?'Two grips set. Hold the lower hand’s button to move it upward.':count===1?'Move your free hand to the next rock edge. Let go of its button to grip.':'Hold a mouse button to move that hand. Release over a rock edge to grip.';
+if(time>feedbackUntil)ui.toast.textContent=count===2?'Two grips set. Hold the lower hand’s button to move it upward.':count===1?'Move your free hand to the next rock edge. Let go of its button to grip.':'Hold a mouse button to reveal reachable edges. Move onto one, then release.';
 }
 function line(x1,y1,x2,y2,color,width=1){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();}
 function label(s,x,y,color='#9aadad',size=11){ctx.fillStyle=color;ctx.font=`600 ${size}px system-ui`;ctx.fillText(s,x,y);}
@@ -81,7 +83,7 @@ const bgScale=Math.max(W/art.valley.width,H/art.valley.height)*1.12;ctx.drawImag
 ctx.save();ctx.translate(W/2-420*scale,H*.53-camera*scale);ctx.scale(scale,scale);
 ctx.save();ctx.beginPath();ctx.moveTo(cliffEdge(700),700);for(let y=700;y<1750;y+=5)ctx.lineTo(cliffEdge(y),y);ctx.lineTo(1050,1750);ctx.lineTo(1050,700);ctx.closePath();ctx.clip();ctx.drawImage(art.cliff,290,700,705,1050);
 // Small irregular fissures establish physical grasp patches inside the natural wall.
-for(const h of holds){const half=9+(h.id%4)*2,slope=((h.id%3)-1)*.16;ctx.beginPath();for(let n=0;n<=12;n++){const x=h.x-half+n*half/6,y=h.y+(x-h.x)*slope+Math.sin(n*1.8+h.id)*.45;n?ctx.lineTo(x,y):ctx.moveTo(x,y);}ctx.strokeStyle='#201b163f';ctx.lineWidth=.65;ctx.stroke();}
+for(const h of holds){const half=9+(h.id%4)*2,slope=((h.id%3)-1)*.16;ctx.beginPath();for(let n=0;n<=12;n++){const x=h.x-half+n*half/6,y=h.y+(x-h.x)*slope+Math.sin(n*1.8+h.id)*.45;n?ctx.lineTo(x,y):ctx.moveTo(x,y);}ctx.strokeStyle='#21170f99';ctx.lineWidth=1.25;ctx.stroke();ctx.translate(0,-1);ctx.strokeStyle='#d9bb8580';ctx.lineWidth=.7;ctx.stroke();ctx.translate(0,1);}
 ctx.restore();
 // Resting shelves remain part of the wall: shallow fissures, not separate blocks.
 ctx.save();ctx.beginPath();ctx.moveTo(cliffEdge(700),700);for(let y=700;y<1750;y+=5)ctx.lineTo(cliffEdge(y),y);ctx.lineTo(1050,1750);ctx.lineTo(1050,700);ctx.closePath();ctx.clip();
@@ -94,6 +96,19 @@ ctx.save();ctx.translate(player.x+8,player.y+9);ctx.fillStyle='#152a3438';ctx.be
 for(let i=0;i<2;i++){const side=i?1:-1,hip={x:player.x+side*6,y:player.y+7},foot={x:player.x+side*9-player.vx*.012,y:player.y+RADIUS-6},knee={x:player.x+side*(player.ground?8:13),y:player.y+32};bone('thigh',hip,knee,10,i===1);bone('shin',knee,foot,8,i===1);sprite('shoe',foot.x,foot.y-1,8,7,0,i===1);}
 for(let i=0;i<2;i++){const a=shoulder(i),h=handPosition(i),dx=h.x-a.x,dy=h.y-a.y,d=Math.hypot(dx,dy)||.001,bend=Math.sqrt(Math.max(0,23**2-(Math.min(d,REACH)/2)**2)),side=i?1:-1,e={x:(a.x+h.x)/2-dy/d*bend*side,y:(a.y+h.y)/2+dx/d*bend*side};bone('upper',a,e,9,i===1);bone('fore',e,h,7,i===1);sprite('hand',h.x,h.y-2,5,7,Math.atan2(dy,dx)-Math.PI/2,i===1);}
 sprite('torso',player.x,player.y-44,31,63);sprite('head',player.x,player.y-56,16,23);
+// Reveal usable edges BEFORE the pointer finds one; never hide the only feedback
+// behind a successful hit-test. Draw over the climber to prevent occluded cues.
+const discovering=control[activeHand].size>0;
+for(const h of holds){
+ const starter=grabs===0&&h.id===0,eligible=discovering&&reachable(h,activeHand);
+ if(!starter&&!eligible)continue;
+ const half=9+(h.id%4)*2,slope=((h.id%3)-1)*.16;
+ ctx.beginPath();for(let n=0;n<=12;n++){const x=h.x-half+n*half/6,y=h.y+(x-h.x)*slope+Math.sin(n*1.8+h.id)*.45;n?ctx.lineTo(x,y):ctx.moveTo(x,y);}
+ ctx.strokeStyle='#281c14d9';ctx.lineWidth=3.3;ctx.stroke();
+ ctx.strokeStyle=starter?'#fff1c3':'#eddbb9';ctx.lineWidth=1.2;ctx.stroke();
+ if(starter){line(h.x-half-3,h.y,h.x-half-22,h.y-12,'#fff1c3',.6);ctx.fillStyle='#18272de8';ctx.fillRect(h.x-half-92,h.y-27,74,14);label('START · LEFT HAND',h.x-half-88,h.y-18,'#fff1c3',5.5);}
+}
+
 ctx.restore();
 // Restrained sun bloom and airborne seed flecks; motion stops with simulation pause.
 const glow=ctx.createRadialGradient(0,H*.12,0,0,H*.12,W*.58);glow.addColorStop(0,'#ffde9742');glow.addColorStop(1,'#ffde9700');ctx.fillStyle=glow;ctx.fillRect(0,0,W,H);
@@ -112,5 +127,5 @@ addEventListener('keyup',e=>{keys[e.code]=false;if(e.code==='KeyQ')finishHand(0,
 addEventListener('blur',()=>pause(true));document.addEventListener('visibilitychange',()=>{if(document.hidden)pause(true);});addEventListener('resize',resize);ui.pause.onclick=()=>pause();ui.reset.onclick=reset;ui.resume.onclick=()=>won?reset():pause(false);
 // Read-only observations for reproducible browser input replays. No state mutation API.
 window.climb={snapshot:()=>({player:{...player},hands:hands.map(h=>h?{...h}:null),moving:control.map(c=>!!c.size),handPositions:[handPosition(0),handPosition(1)],shoulders:[shoulder(0),shoulder(1)],holds,platforms,paused,won,time,grabs,falls,settle,reach:REACH,footOffset:RADIUS,camera,scale,assetsReady,viewport:{W,H},target:target()?.id}),screen:id=>screen(holds[id])};
-resize();reset();ui.toast.textContent="Preparing the cliff…";assetLoad.then(()=>{prepareAtlas();assetsReady=true;say("Feel along cracks and rock edges. Hold to reach, release to grip.",8);}).catch(e=>{ui.toast.textContent="Artwork failed to load. Please reload.";console.error(e);});requestAnimationFrame(frame);
+resize();reset();ui.toast.textContent="Preparing the cliff…";assetLoad.then(()=>{prepareAtlas();assetsReady=true;say("Start at the marked edge. Hold LEFT mouse, move there, then release.",8);}).catch(e=>{ui.toast.textContent="Artwork failed to load. Please reload.";console.error(e);});requestAnimationFrame(frame);
 </script></body></html>
