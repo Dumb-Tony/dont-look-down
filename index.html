@@ -62,7 +62,7 @@ if(player.ground){player.vy=0;if(player.y===restDeck.y-RADIUS&&time>feedbackUnti
 // No release impulse: velocity comes from the last constrained body displacement.
 const top=platforms[4];if(player.ground&&Math.abs(player.y+RADIUS-top.y)<1&&player.x>=top.x&&player.x<=top.x+top.w&&Math.abs(player.vx)<18)settle+=dt;else settle=0;if(settle>.75)win();
 best=Math.max(best,(FLOOR-RADIUS-player.y)/100);camera+=(player.y-22-camera)*(1-Math.exp(-4*dt));
-if(time>feedbackUntil)ui.toast.textContent=count===2?'Two grips set. Hold the lower hand’s button to move it upward.':count===1?'Move your free hand to the next rock edge. Let go of its button to grip.':'Hold a mouse button to reveal reachable edges. Move onto one, then release.';
+if(time>feedbackUntil)ui.toast.textContent=count===2?'Two grips set. Hold the lower hand’s button to move it upward.':count===1?'Move your free hand to the next rock edge. Let go of its button to grip.':'Look for dark seams in the rock. Hold to reach, then release on an edge.';
 }
 function line(x1,y1,x2,y2,color,width=1){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();}
 function label(s,x,y,color='#9aadad',size=11){ctx.fillStyle=color;ctx.font=`600 ${size}px system-ui`;ctx.fillText(s,x,y);}
@@ -100,15 +100,15 @@ ctx.clearRect(0,0,W,H);
 const bgScale=Math.max(W/art.valley.width,H/art.valley.height)*1.12;ctx.drawImage(art.valley,(W-art.valley.width*bgScale)/2,(H-art.valley.height*bgScale)/2+(camera-1200)*.035,art.valley.width*bgScale,art.valley.height*bgScale);
 ctx.save();ctx.translate(W/2-420*scale,H*.53-camera*scale);ctx.scale(scale,scale);
 ctx.save();ctx.beginPath();ctx.moveTo(cliffEdge(700),700);for(let y=700;y<1750;y+=5)ctx.lineTo(cliffEdge(y),y);ctx.lineTo(1050,1750);ctx.lineTo(1050,700);ctx.closePath();ctx.clip();ctx.drawImage(art.cliff,290,700,705,1050);
-// Small irregular fissures establish physical grasp patches inside the natural wall.
-for(const h of holds){const half=9+(h.id%4)*2,slope=((h.id%3)-1)*.16;ctx.beginPath();for(let n=0;n<=12;n++){const x=h.x-half+n*half/6,y=h.y+(x-h.x)*slope+Math.sin(n*1.8+h.id)*.45;n?ctx.lineTo(x,y):ctx.moveTo(x,y);}ctx.strokeStyle='#21170f99';ctx.lineWidth=1.25;ctx.stroke();ctx.translate(0,-1);ctx.strokeStyle='#d9bb8580';ctx.lineWidth=.7;ctx.stroke();ctx.translate(0,1);}
+// Solid, subdued seams remain the same whether a mouse button is held or not.
+for(const h of holds){const half=9+(h.id%4)*2,slope=((h.id%3)-1)*.16;line(h.x-half,h.y-half*slope,h.x+half,h.y+half*slope,'#34281d9e',1);}
 ctx.restore();
 // Resting shelves remain part of the wall: shallow fissures, not separate blocks.
 ctx.save();ctx.beginPath();ctx.moveTo(cliffEdge(700),700);for(let y=700;y<1750;y+=5)ctx.lineTo(cliffEdge(y),y);ctx.lineTo(1050,1750);ctx.lineTo(1050,700);ctx.closePath();ctx.clip();
 for(const p of platforms){for(let pass=0;pass<3;pass++){ctx.beginPath();for(let n=0;n<=30;n++){const x=p.x+n*p.w/30,y=p.y+Math.sin(n*1.7+p.y)*.55+pass*.65;n?ctx.lineTo(x,y):ctx.moveTo(x,y);}ctx.strokeStyle=['#d0b18d38','#211a154d','#30251e22'][pass];ctx.lineWidth=pass===1?1.8:.8;ctx.stroke();}}
 ctx.restore();
 const aim=pointer.active?target():null;
-if(aim&&control[activeHand].size){line(aim.x-3,aim.y,aim.x+3,aim.y,reachable(aim,activeHand)?'#eddbb99c':'#b47b6299',.65);ui.toast.textContent=reachable(aim,activeHand)?'This edge feels firm. Let go to grip.':'Too far. Shift closer before letting go.';}
+if(aim&&control[activeHand].size){ui.toast.textContent=reachable(aim,activeHand)?'This edge feels firm. Let go to grip.':'Too far. Shift closer before letting go.';}
 // Articulated anatomy: physical anchors are fingertips, not sleeve ends.
 ctx.save();ctx.translate(player.x+6,player.y+8);ctx.fillStyle='#152a3428';ctx.beginPath();ctx.ellipse(0,0,16,54,-.09,0,6.28);ctx.fill();ctx.restore();
 for(let i=0;i<2;i++){const side=i?1:-1,hip={x:player.x+side*6,y:player.y+5},foot={x:player.x+side*8-player.vx*.008,y:player.y+RADIUS-7},knee={x:player.x+side*(player.ground?8:11),y:player.y+29};bone('thigh',hip,knee,11,i===1);bone('shin',knee,foot,8.5,i===1);sprite('shoe',foot.x,foot.y-1,9,8,0,i===1);}
@@ -121,19 +121,8 @@ const outline=[[-8,0],[8,0],[12,9],[11,27],[13,35],[17,44],[15,54],[-15,54],[-17
 outline.forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p));ctx.closePath();ctx.clip();sprite('torso',0,0,34,54);ctx.restore();
 sprite('head',player.x,player.y-58,15,21);
 for(let i=0;i<2;i++){const pose=poses[i];bone('fore',pose.elbow,pose.wrist,7.5,i===1);}
-// Reveal usable edges BEFORE the pointer finds one; never hide the only feedback
-// behind a successful hit-test. Draw over the climber to prevent occluded cues.
-const discovering=control[activeHand].size>0;
-for(const h of holds){
- const starter=grabs===0&&h.id===0,eligible=discovering&&reachable(h,activeHand);
- if(!starter&&!eligible)continue;
- const half=9+(h.id%4)*2,slope=((h.id%3)-1)*.16;
- ctx.beginPath();for(let n=0;n<=12;n++){const x=h.x-half+n*half/6,y=h.y+(x-h.x)*slope+Math.sin(n*1.8+h.id)*.45;n?ctx.lineTo(x,y):ctx.moveTo(x,y);}
- ctx.strokeStyle='#281c14d9';ctx.lineWidth=3.3;ctx.stroke();
- ctx.strokeStyle=starter?'#fff1c3':'#eddbb9';ctx.lineWidth=1.2;ctx.stroke();
- if(starter){line(h.x-half-3,h.y,h.x-half-22,h.y-12,'#fff1c3',.6);ctx.fillStyle='#18272de8';ctx.fillRect(h.x-half-92,h.y-27,74,14);label('START · LEFT HAND',h.x-half-88,h.y-18,'#fff1c3',5.5);}
-}
-// Fingers remain visible on top of the discovery accent at the actual contact.
+// Keep the one-time starting instruction, without changing the seam's appearance.
+if(grabs===0){const h=holds[0],half=9;line(h.x-half-3,h.y,h.x-half-22,h.y-12,'#c8bda58c',.5);ctx.fillStyle='#18272de8';ctx.fillRect(h.x-half-92,h.y-27,74,14);label('START · LEFT HAND',h.x-half-88,h.y-18,'#d3cbb8',5.5);}
 for(let i=0;i<2;i++)drawHand(poses[i],i);
 ctx.restore();
 // Restrained sun bloom and airborne seed flecks; motion stops with simulation pause.

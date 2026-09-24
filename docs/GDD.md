@@ -90,3 +90,7 @@ The initial Higgsfield pass hid the authored grips too well. A starting edge cle
 ## Character rig repair — 24 September 2026
 
 Removed the torso atlas's baked-in sleeves from its silhouette so the articulated arms are the only pair. Adjusted head, trunk, hips and leg proportions and their overlaps. Elbows bend toward the outside of each shoulder. The physical hand target now represents the fingertip: upper arm 21, forearm 19, hand 6, preserving the existing 46-unit maximum reach. The hand sprite is anchored by its actual opaque fingertip pixels and rotated with the forearm. Wrists remain six units behind the contact; hands render above grip highlights. These replace the previous two 23-unit sleeve segments with a hand drawn beyond the anchor. Physics reach, route geometry and input semantics are unchanged.
+
+## Subtle grip presentation — 24 September 2026
+
+User requested solid lines slightly darker than the cliff, without cartoonish mouse-down highlighting. Grip patches now render as single straight, sloped dark strokes, aligned to their physical seams. Removed the pale edge strokes, wavy highlight outlines, and aimed marker. The first-grip instruction remains, with a subdued leader; grip eligibility is communicated in text. Hit regions, positions, reach and physics are unchanged.

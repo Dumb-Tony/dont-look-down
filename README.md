@@ -27,7 +27,7 @@ The left rest shelf supports your weight with no grips. Its right edge offers an
 
 ## Visual direction
 
-Higgsfield-generated sandstone fills the close cliff view, with detailed fissures, mineral grain, golden-hour lighting, and an atmospheric canyon background. Small authored crack patches replace the separate block-shaped holds. Aim along a patch and release: the hand plants at that position on the seam, rather than snapping to its center. A restrained highlight and message appear while probing a usable edge.
+Higgsfield-generated sandstone fills the close cliff view, with detailed fissures, mineral grain, golden-hour lighting, and an atmospheric canyon background. Small authored crack patches replace the separate block-shaped holds. Aim along a patch and release: the hand plants at that position on the seam, rather than snapping to its center. Grip seams are thin, solid dark lines; a text cue confirms a usable edge while reaching.
 
 The grip patches and resting surfaces remain authored; decorative cracks are not all climbable, and the game does not infer grip quality from image pixels. Route readability needs human playtesting. The character atlas is articulated in Canvas, with simpler movement and depth than the visual reference.
 
@@ -52,7 +52,7 @@ The game has no dependencies. Optional regression tooling requires Node, Playwri
 
 ## Finding your first grip
 
-The starting edge is marked beside the climber's head. Hold the left mouse button, move onto that edge, then release. Whenever you hold either hand's button, reachable edges light up before you aim at them. These are temporary discovery cues; the first-grip label disappears once you catch. The first two catches are also checked using screenshot-selected pixel positions (`tests/discovery.cjs`), alongside the complete route replays.
+The starting edge is marked beside the climber's head. Hold the left mouse button, move onto that edge, then release. Look closely for solid dark seams in the cliff. Their appearance stays the same while holding either mouse button; the text cue confirms reachability. The first-grip label disappears once you catch. The first two catches are also checked using screenshot-selected pixel positions (`tests/discovery.cjs`), alongside the complete route replays.
 
 ## Character articulation
 

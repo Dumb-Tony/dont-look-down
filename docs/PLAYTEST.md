@@ -113,3 +113,7 @@ Local Edge checks: full ascent, lower-catch recovery/ascent, rest/gap recovery/a
 Fixed duplicate-looking arms caused by painted sleeves inside the torso atlas. The torso silhouette now excludes those sleeves. Rebalanced head, jacket, pelvis and legs; improved outside elbow bends and overlapping joints. Split the visual reach into 21-unit upper arm, 19-unit forearm and 6-unit hand while preserving the 46-unit physical cap. The sprite's opaque fingertip is placed at the grip and hands draw above edge accents.
 
 Local Edge full-route replay passed main ascent, lower-catch recovery/ascent, rest/gap recovery/ascent, inputs, reach limits, pause/blur/reset, resize, and zero browser errors. Added assertions at each placement that fingertips coincide with planted anchors, wrists remain six units behind fingers, and upper arms preserve length. Screenshot-selected first two grips also pass. Inspected standing, first-grip, and mid-ascent poses for duplicate sleeves, limb connections and finger contact. Visual smoke test had zero errors and approximately 5 ms median / 5.1 ms p95 headless RAF intervals. Automated checks and screenshot review are not human feel testing.
+
+## 2026-09-24 — subdued solid grip seams
+
+Replaced bright mouse-held grip highlights and wavy double strokes with single dark solid seams. Inspected the reaching screenshot: no pale or mouse-down outline remains. The screenshot-selected first two catches and visual smoke check passed locally with no browser errors. Physics and route geometry were unchanged.
