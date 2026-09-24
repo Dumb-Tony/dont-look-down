@@ -53,3 +53,7 @@ The game has no dependencies. Optional regression tooling requires Node, Playwri
 ## Finding your first grip
 
 The starting edge is marked beside the climber's head. Hold the left mouse button, move onto that edge, then release. Whenever you hold either hand's button, reachable edges light up before you aim at them. These are temporary discovery cues; the first-grip label disappears once you catch. The first two catches are also checked using screenshot-selected pixel positions (`tests/discovery.cjs`), alongside the complete route replays.
+
+## Character articulation
+
+The character's torso is masked to remove baked-in duplicate sleeves. Rebalanced head/body/leg proportions and separate shoulder, elbow, wrist and fingertip joints make the articulated silhouette more coherent. Grips and pointer targets correspond to fingertips; the hand sits between the wrist and the rock instead of extending beyond the contact. Total reach remains 46 units.

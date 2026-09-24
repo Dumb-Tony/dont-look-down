@@ -72,10 +72,28 @@ const pieces={};
 function prepareAtlas(){
  // Source rectangles selected from the actual generated sheet, including its irregular padding.
  const boxes={torso:[100,40,530,725],head:[830,130,400,540],upper:[1530,70,290,645],fore:[195,810,285,540],hand:[880,825,290,500],thigh:[1500,720,360,660],shin:[230,1370,275,650],shoe:[880,1460,310,520]};
- for(const [name,box] of Object.entries(boxes)){const c=document.createElement('canvas');c.width=box[2];c.height=box[3];const g=c.getContext('2d');g.drawImage(art.atlas,...box,0,0,c.width,c.height);const pixels=g.getImageData(0,0,c.width,c.height);let l=c.width,t=c.height,r=0,b=0;for(let y=0;y<c.height;y++)for(let x=0;x<c.width;x++){const i=(y*c.width+x)*4,a=pixels.data[i+3];pixels.data[i+3]=Math.max(0,Math.min(255,(a-200)*5));if(a>235){l=Math.min(l,x);r=Math.max(r,x);t=Math.min(t,y);b=Math.max(b,y);}}g.putImageData(pixels,0,0);pieces[name]={image:c,sx:l,sy:t,sw:r-l+1,sh:b-t+1};}
+ for(const [name,box] of Object.entries(boxes)){const c=document.createElement('canvas');c.width=box[2];c.height=box[3];const g=c.getContext('2d');g.drawImage(art.atlas,...box,0,0,c.width,c.height);const pixels=g.getImageData(0,0,c.width,c.height);let l=c.width,t=c.height,r=0,b=0;for(let y=0;y<c.height;y++)for(let x=0;x<c.width;x++){const i=(y*c.width+x)*4,a=pixels.data[i+3];pixels.data[i+3]=Math.max(0,Math.min(255,(a-200)*5));if(a>235){l=Math.min(l,x);r=Math.max(r,x);t=Math.min(t,y);b=Math.max(b,y);}}g.putImageData(pixels,0,0);let tipSum=0,tipCount=0;for(let y=Math.max(t,b-2);y<=b;y++)for(let x=l;x<=r;x++)if(pixels.data[(y*c.width+x)*4+3]>175){tipSum+=x;tipCount++;}pieces[name]={image:c,sx:l,sy:t,sw:r-l+1,sh:b-t+1,tipX:tipCount?(tipSum/tipCount-l)/(r-l+1):.5};}
 }
 function sprite(name,x,y,w,h,angle=0,flip=false){const p=pieces[name];ctx.save();ctx.translate(x,y);ctx.rotate(angle);if(flip)ctx.scale(-1,1);ctx.drawImage(p.image,p.sx,p.sy,p.sw,p.sh,-w/2,0,w,h);ctx.restore();}
 function bone(name,a,b,w,flip=false){sprite(name,a.x,a.y,w,Math.hypot(b.x-a.x,b.y-a.y)+2,Math.atan2(b.y-a.y,b.x-a.x)-Math.PI/2,flip);}
+function armPose(i){
+ const a=shoulder(i),tip=handPosition(i),dx=tip.x-a.x,dy=tip.y-a.y,d=Math.max(.001,Math.hypot(dx,dy));
+ // Upper arm 21 + forearm 19 + hand 6 = the existing 46-unit reach.
+ // Solve the elbow against the forearm plus hand, then split at the wrist.
+ const upper=21,lower=25,dist=Math.max(4.001,Math.min(46,d));
+ const along=(upper*upper-lower*lower+dist*dist)/(2*dist),bend=Math.sqrt(Math.max(0,upper*upper-along*along));
+ const ux=dx/d,uy=dy/d,side=i?1:-1;
+ const sign=(-uy*side+ux*.45)>=0?1:-1;
+ const elbow={x:a.x+ux*along-uy*bend*sign,y:a.y+uy*along+ux*bend*sign};
+ const fx=tip.x-elbow.x,fy=tip.y-elbow.y,len=Math.hypot(fx,fy)||1;
+ const wrist={x:tip.x-fx/len*6,y:tip.y-fy/len*6};
+ return{shoulder:a,elbow,wrist,tip,angle:Math.atan2(fy,fx)-Math.PI/2};
+}
+function drawHand(pose,i){
+ // Trimmed atlas hand points down. Its longest fingertip is at bottom center;
+ // position that point at the physical anchor and the wrist six units behind it.
+ const p=pieces.hand;ctx.save();ctx.translate(pose.tip.x,pose.tip.y);ctx.rotate(pose.angle);if(i===1)ctx.scale(-1,1);ctx.drawImage(p.image,p.sx,p.sy,p.sw,p.sh,-p.tipX*4.8,-6,4.8,6);ctx.restore();
+}
 function cliffEdge(y){return 316+Math.sin(y*.018)*12+Math.sin(y*.073)*5;}
 function draw(){
 ctx.clearRect(0,0,W,H);
@@ -91,11 +109,18 @@ for(const p of platforms){for(let pass=0;pass<3;pass++){ctx.beginPath();for(let 
 ctx.restore();
 const aim=pointer.active?target():null;
 if(aim&&control[activeHand].size){line(aim.x-3,aim.y,aim.x+3,aim.y,reachable(aim,activeHand)?'#eddbb99c':'#b47b6299',.65);ui.toast.textContent=reachable(aim,activeHand)?'This edge feels firm. Let go to grip.':'Too far. Shift closer before letting go.';}
-// Higgsfield character parts follow the same physical hand and foot anchors.
-ctx.save();ctx.translate(player.x+8,player.y+9);ctx.fillStyle='#152a3438';ctx.beginPath();ctx.ellipse(0,0,16,57,-.09,0,6.28);ctx.fill();ctx.restore();
-for(let i=0;i<2;i++){const side=i?1:-1,hip={x:player.x+side*6,y:player.y+7},foot={x:player.x+side*9-player.vx*.012,y:player.y+RADIUS-6},knee={x:player.x+side*(player.ground?8:13),y:player.y+32};bone('thigh',hip,knee,10,i===1);bone('shin',knee,foot,8,i===1);sprite('shoe',foot.x,foot.y-1,8,7,0,i===1);}
-for(let i=0;i<2;i++){const a=shoulder(i),h=handPosition(i),dx=h.x-a.x,dy=h.y-a.y,d=Math.hypot(dx,dy)||.001,bend=Math.sqrt(Math.max(0,23**2-(Math.min(d,REACH)/2)**2)),side=i?1:-1,e={x:(a.x+h.x)/2-dy/d*bend*side,y:(a.y+h.y)/2+dx/d*bend*side};bone('upper',a,e,9,i===1);bone('fore',e,h,7,i===1);sprite('hand',h.x,h.y-2,5,7,Math.atan2(dy,dx)-Math.PI/2,i===1);}
-sprite('torso',player.x,player.y-44,31,63);sprite('head',player.x,player.y-56,16,23);
+// Articulated anatomy: physical anchors are fingertips, not sleeve ends.
+ctx.save();ctx.translate(player.x+6,player.y+8);ctx.fillStyle='#152a3428';ctx.beginPath();ctx.ellipse(0,0,16,54,-.09,0,6.28);ctx.fill();ctx.restore();
+for(let i=0;i<2;i++){const side=i?1:-1,hip={x:player.x+side*6,y:player.y+5},foot={x:player.x+side*8-player.vx*.008,y:player.y+RADIUS-7},knee={x:player.x+side*(player.ground?8:11),y:player.y+29};bone('thigh',hip,knee,11,i===1);bone('shin',knee,foot,8.5,i===1);sprite('shoe',foot.x,foot.y-1,9,8,0,i===1);}
+const poses=[armPose(0),armPose(1)];
+for(let i=0;i<2;i++)bone('upper',poses[i].shoulder,poses[i].elbow,9.5,i===1);
+// The atlas torso includes painted sleeves: mask those out so there is only one
+// pair of arms. Keep the jacket trunk, hood, harness and chalk bag.
+ctx.save();ctx.translate(player.x,player.y-43);ctx.beginPath();
+const outline=[[-8,0],[8,0],[12,9],[11,27],[13,35],[17,44],[15,54],[-15,54],[-17,44],[-13,35],[-11,27],[-12,9]];
+outline.forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p));ctx.closePath();ctx.clip();sprite('torso',0,0,34,54);ctx.restore();
+sprite('head',player.x,player.y-58,15,21);
+for(let i=0;i<2;i++){const pose=poses[i];bone('fore',pose.elbow,pose.wrist,7.5,i===1);}
 // Reveal usable edges BEFORE the pointer finds one; never hide the only feedback
 // behind a successful hit-test. Draw over the climber to prevent occluded cues.
 const discovering=control[activeHand].size>0;
@@ -108,7 +133,8 @@ for(const h of holds){
  ctx.strokeStyle=starter?'#fff1c3':'#eddbb9';ctx.lineWidth=1.2;ctx.stroke();
  if(starter){line(h.x-half-3,h.y,h.x-half-22,h.y-12,'#fff1c3',.6);ctx.fillStyle='#18272de8';ctx.fillRect(h.x-half-92,h.y-27,74,14);label('START · LEFT HAND',h.x-half-88,h.y-18,'#fff1c3',5.5);}
 }
-
+// Fingers remain visible on top of the discovery accent at the actual contact.
+for(let i=0;i<2;i++)drawHand(poses[i],i);
 ctx.restore();
 // Restrained sun bloom and airborne seed flecks; motion stops with simulation pause.
 const glow=ctx.createRadialGradient(0,H*.12,0,0,H*.12,W*.58);glow.addColorStop(0,'#ffde9742');glow.addColorStop(1,'#ffde9700');ctx.fillStyle=glow;ctx.fillRect(0,0,W,H);
@@ -126,6 +152,6 @@ addEventListener('keydown',e=>{if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight
 addEventListener('keyup',e=>{keys[e.code]=false;if(e.code==='KeyQ')finishHand(0,'key');if(e.code==='KeyE')finishHand(1,'key');});
 addEventListener('blur',()=>pause(true));document.addEventListener('visibilitychange',()=>{if(document.hidden)pause(true);});addEventListener('resize',resize);ui.pause.onclick=()=>pause();ui.reset.onclick=reset;ui.resume.onclick=()=>won?reset():pause(false);
 // Read-only observations for reproducible browser input replays. No state mutation API.
-window.climb={snapshot:()=>({player:{...player},hands:hands.map(h=>h?{...h}:null),moving:control.map(c=>!!c.size),handPositions:[handPosition(0),handPosition(1)],shoulders:[shoulder(0),shoulder(1)],holds,platforms,paused,won,time,grabs,falls,settle,reach:REACH,footOffset:RADIUS,camera,scale,assetsReady,viewport:{W,H},target:target()?.id}),screen:id=>screen(holds[id])};
+window.climb={snapshot:()=>({player:{...player},hands:hands.map(h=>h?{...h}:null),moving:control.map(c=>!!c.size),handPositions:[handPosition(0),handPosition(1)],shoulders:[shoulder(0),shoulder(1)],armPoses:[armPose(0),armPose(1)],holds,platforms,paused,won,time,grabs,falls,settle,reach:REACH,footOffset:RADIUS,camera,scale,assetsReady,viewport:{W,H},target:target()?.id}),screen:id=>screen(holds[id])};
 resize();reset();ui.toast.textContent="Preparing the cliff…";assetLoad.then(()=>{prepareAtlas();assetsReady=true;say("Start at the marked edge. Hold LEFT mouse, move there, then release.",8);}).catch(e=>{ui.toast.textContent="Artwork failed to load. Please reload.";console.error(e);});requestAnimationFrame(frame);
 </script></body></html>
