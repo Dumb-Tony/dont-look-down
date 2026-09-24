@@ -8,6 +8,7 @@ const p=path.join(root,'index.html');let html=fs.readFileSync(p,'utf8').replace(
 const block='<!-- CHARACTER_3D_START -->\n<script>'+code.replaceAll('</script','<\\/script')+'\nwindow.climberModelData="'+asset+'";</script>\n<!-- CHARACTER_3D_END -->';
 if(html.includes('<!-- CHARACTER_3D_START -->'))html=html.replace(/<!-- CHARACTER_3D_START -->[\s\S]*?<!-- CHARACTER_3D_END -->/,()=>block);
 else html=html.replace("<script>\n'use strict';",()=>block+"\n<script>\n'use strict';");
-fs.writeFileSync(p,html);console.log('Embedded rig and renderer',code.length,asset.length);
+fs.writeFileSync(p,html.replace(/[ \t]+$/gm,''));console.log('Embedded rig and renderer',code.length,asset.length);
+
 
 
