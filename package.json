@@ -1,0 +1,11 @@
+{
+  "name": "dont-look-down",
+  "private": true,
+  "scripts": {
+    "build:character": "node scripts/build_character.cjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.10",
+    "three": "0.180.0"
+  }
+}

@@ -117,3 +117,11 @@ Local Edge full-route replay passed main ascent, lower-catch recovery/ascent, re
 ## 2026-09-24 — subdued solid grip seams
 
 Replaced bright mouse-held grip highlights and wavy double strokes with single dark solid seams. Inspected the reaching screenshot: no pale or mouse-down outline remains. The screenshot-selected first two catches and visual smoke check passed locally with no browser errors. Physics and route geometry were unchanged.
+
+## 2026-09-24 — true skinned 3D character
+
+Built an editable 50-bone humanoid and 51 weighted mesh pieces through Higgsfield's Blender scene tools, exported to GLB, and integrated the rig in the game with an embedded Three.js renderer. The original image-to-3D submission tool was unavailable; this is a custom modeled stylized base, not an image-conversion result. Clothing samples the existing generated atlas. Reviewed the Blender studio render, corrected mirrored sleeve normals, and inspected standing, first-reach and mid-climb screenshots in-game.
+
+Local Edge full-route regression passed the main summit, falling catch/recovery/summit, and rest/gap/summit. Input ordering, both hands, keyboard, pause/blur/reset, resizing and browser-error checks passed. At every placement the replay additionally verifies a real skinned renderer, 50 bones, and less than 0.05 world-unit error between each actual skeletal middle-finger endpoint and its physical target. The initial inspection measured about 0.000004 units. Screenshot-selected first two grips also passed.
+
+The visual smoke test now explicitly waits for asset and 3D renderer readiness, rather than accepting a loading/error screen. It reported zero browser errors and about 5 ms median / 5.2 ms p95 headless RAF intervals on this machine. These are automated checks and screenshot review, not a manual feel test. WebGL2 is now required; the cliff and physics remain 2D, and the character's surface fidelity is intentionally documented as a stylized foundation.

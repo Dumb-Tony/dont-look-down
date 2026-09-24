@@ -21,17 +21,21 @@ The body pulls up naturally after a grip; W is no longer needed. Start by holdin
 
 The left rest shelf supports your weight with no grips. Its right edge offers an optional gap transfer to the rock lip to the right. A failed transfer can fall onto a lower hold or deck; restarting is optional.
 
-## Selected character direction
+## Rigged 3D character
 
-[Option B — stylized 3D reference](docs/art-direction/option-b.png) is the accepted visual target. The playable character uses a Higgsfield-generated transparent body-part atlas, articulated with the existing arm constraints. Adult proportions and 23-unit arm bones are retained. This is a 2D game using generated raster artwork, not a 3D character model.
+The playable climber is now a real skinned 3D mesh, built in Blender through Higgsfield 3D Jutsu. Its 50-bone hierarchy includes spine, clavicles, arms, wrists, individual fingers, hips, legs and feet. Weighted sleeve and trouser vertices deform across joints; the old flat body-part sprites are no longer rendered. The accepted teal jacket / orange helmet design remains the visual reference.
+
+Arm IK drives the skeleton from the physical fingertip targets. The wrist is solved behind the hand rather than placed on the rock. The mesh uses real-time lighting and fabric textures sampled from the generated atlas. This is a stylized base rig, with simpler geometry and surface detail than the reference image; the cliff and gameplay remain 2D.
+
+Editable source: `assets/character/climber.blend`; portable rig: `assets/character/climber.glb`. `src/character3d.js` contains the renderer and IK, and `scripts/build_climber.py` records the Blender construction. Run `npm ci` then `node scripts/build_character.cjs` to embed the renderer and model in the standalone HTML. WebGL2 is required to render the character; playing still requires no network requests or separate runtime files.
 
 ## Visual direction
 
 Higgsfield-generated sandstone fills the close cliff view, with detailed fissures, mineral grain, golden-hour lighting, and an atmospheric canyon background. Small authored crack patches replace the separate block-shaped holds. Aim along a patch and release: the hand plants at that position on the seam, rather than snapping to its center. Grip seams are thin, solid dark lines; a text cue confirms a usable edge while reaching.
 
-The grip patches and resting surfaces remain authored; decorative cracks are not all climbable, and the game does not infer grip quality from image pixels. Route readability needs human playtesting. The character atlas is articulated in Canvas, with simpler movement and depth than the visual reference.
+The grip patches and resting surfaces remain authored; decorative cracks are not all climbable, and the game does not infer grip quality from image pixels. Route readability needs human playtesting. The 3D character is rendered into the existing cliff scene; the environment remains a painted 2D surface.
 
-Generated source PNGs, encoded WebPs, and provenance are in `assets/higgsfield/`. Run `python scripts/embed_assets.py` with Pillow to rebuild the embedded pack. The approximately 6.2 MB standalone HTML includes every runtime image and works offline.
+Generated source PNGs, encoded WebPs, and provenance are in `assets/higgsfield/`. Run `python scripts/embed_assets.py` with Pillow to rebuild the embedded pack. The standalone HTML includes all images, the model and the 3D renderer, and works offline.
 
 ## Status and limits
 
@@ -48,7 +52,7 @@ Short arms with fixed-length upper/lower segments and bending elbows. Holds and 
 - `docs/SHARING.md` — publication details
 - `tests/playtest.cjs` — browser input regression replay; no game-state mutation
 
-The game has no dependencies. Optional regression tooling requires Node, Playwright, and installed Microsoft Edge: run `node tests/playtest.cjs` with Playwright available, or set `PLAYWRIGHT_MODULE` to its module path. Set `PLAYTEST_URL` to test a deployed copy instead of the local file. Screenshots are generated into `tests/` and excluded from Git.
+Runtime dependencies are embedded in the HTML. Optional regression tooling requires Node, Playwright, and installed Microsoft Edge: run `node tests/playtest.cjs` with Playwright available, or set `PLAYWRIGHT_MODULE` to its module path. Set `PLAYTEST_URL` to test a deployed copy instead of the local file. Screenshots are generated into `tests/` and excluded from Git.
 
 ## Finding your first grip
 

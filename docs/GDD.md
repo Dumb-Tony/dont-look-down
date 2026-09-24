@@ -94,3 +94,9 @@ Removed the torso atlas's baked-in sleeves from its silhouette so the articulate
 ## Subtle grip presentation — 24 September 2026
 
 User requested solid lines slightly darker than the cliff, without cartoonish mouse-down highlighting. Grip patches now render as single straight, sloped dark strokes, aligned to their physical seams. Removed the pale edge strokes, wavy highlight outlines, and aimed marker. The first-grip instruction remains, with a subdued leader; grip eligibility is communicated in text. Hit regions, positions, reach and physics are unchanged.
+
+## True 3D skeleton foundation — 24 September 2026
+
+User explicitly selected a true 3D character and skeleton. Replaced the flat-part renderer with a Blender-built skinned GLB containing a 50-bone humanoid hierarchy and weighted limb geometry. Three.js renders the animated mesh into the existing scene. Analytic IK rotates upper-arm, forearm and hand bones to the target using the actual middle-finger endpoint; other fingers curl slightly for planted grips. Leg bones follow the standing/climbing stance. Rig and character source are retained in assets/character, with a reproducible construction script and embedded renderer build step.
+
+Cliff imagery, solid dark seams, physical grip locations and controls remain unchanged. This is a 3D character inside a 2D climbing scene, not a conversion of the whole level to 3D. The mesh is a stylized base whose surface fidelity remains below the generated reference. The model and renderer are embedded in index.html; WebGL2 is required, but playing needs no CDN or asset downloads.
